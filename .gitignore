@@ -1,0 +1,6 @@
+# CMake
+build/
+compile_commands.json
+
+# Cache
+.cache/
