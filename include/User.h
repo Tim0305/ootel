@@ -3,36 +3,45 @@
 
 #include <string>
 
-using namespace std;
-
-class User{
+class User {
 private:
   int id;
-  string name;
-  string email;
+  std::string name;
+  std::string email;
   long phone_number;
-  string password;
-  string birthdate;
+  std::string password;
+  std::string birthdate;
   int tipo;
+
 public:
-  User();
+  User(int id, std::string name, std::string email, long phone_number,
+       std::string password, std::string birthdate);
+  virtual ~User() = default;
+
+  // Constants
   const static int ADMINISTRATOR;
   const static int CLIENT;
+
+  // Getters
   int get_id();
   long get_phone_number();
-  string get_name();
-  string get_email();
-  string get_password();
-  string get_birthdate();
+  std::string get_name();
+  std::string get_email();
+  std::string get_password();
+  std::string get_birthdate();
+
+  // Setters
   void set_id(int id);
-  void set_phone_number(long phone_numer);
-  void set_name(string name);
-  void set_email(string email);
-  void set_birthdate(string birthdate);
-  bool login(string username, string password);
+  void set_phone_number(long phone_number);
+  void set_name(std::string name);
+  void set_email(std::string email);
+  void set_birthdate(std::string birthdate);
+  void update_password(std::string current_password, std::string new_password);
+  virtual void update_profile(std::string name, std::string email,
+                              long phone_number, std::string birthdate) = 0;
+
+  bool login(std::string username, std::string password);
   bool sign_out();
-  virtual bool update_profile(string name, string email, long phone_number, string birthdate);
-  bool update_password(string password, string new_password);
 };
 
 #endif // !USER_H

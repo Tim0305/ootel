@@ -2,16 +2,31 @@
 #define BANKCARD_H
 
 #include <string>
-using namespace std;
 
-class BankCard{
+class BankCard {
 private:
   int number;
-  string cardholder;
-  string expire_date;
+  std::string cardholder;
+  int expiration_year;
   int cvc;
+
 public:
-   
+  BankCard();
+  BankCard(int number, std::string cardholder, int expiration_year, int cvc)
+      : number(number), cardholder(cardholder),
+        expiration_year(expiration_year), cvc(cvc) {}
+
+  // Getters
+  int get_number();
+  int get_expiration_year();
+  int get_cvc();
+  std::string get_cardholder();
+
+  // Setters
+  void set_number(int number);
+  void set_expiration_year(int expiration_year);
+  void set_cvc(int cvc);
+  void set_cardholder(std::string cardholder);
 };
 
 #endif // !BANKCARD_H
