@@ -26,7 +26,7 @@ public:
   Datetime get_start_date();
   Datetime get_end_date();
   bool is_active();
-  Fee get_fee();
+  Fee& get_fee();
 
   // Setters
   void set_id(int id);
