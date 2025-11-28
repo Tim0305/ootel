@@ -1,4 +1,6 @@
 cmake_minimum_required(VERSION 4.2)
+
+# Project
 project(ootel CXX)
 
 # compile_commands.json
