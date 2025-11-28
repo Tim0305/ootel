@@ -6,8 +6,8 @@ project(ootel CXX)
 # compile_commands.json
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# standard C++ 23
-set(CMAKE_CXX_STANDARD 23)
+# standard C++ 17
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Creamos el ejecutable como target
