@@ -1,39 +1,30 @@
 #include "Reservation.h"
 
-// Constructor
-Reservation::Reservation() : id(0), start_date(), end_date(), active(false), fee(), client(nullptr), room(nullptr) {}
-
-Reservation::Reservation(int id, Datetime start_date, Datetime end_date, bool active,
-                         Fee fee, Client* client, Room* room)
-    : id(id), start_date(start_date), end_date(end_date), active(active), fee(fee),
-      client(client), room(room) {}
-
-
-int Reservation::get_id() const { 
+int Reservation::get_id(){ 
     return id; 
 }
 
-Datetime Reservation::get_start_date() const { 
+Datetime Reservation::get_start_date(){ 
     return start_date; 
 }
 
-Datetime Reservation::get_end_date() const { 
+Datetime Reservation::get_end_date(){ 
     return end_date; 
 }
 
-bool Reservation::is_active() const { 
+bool Reservation::is_active(){ 
     return active; 
 }
 
-Fee& Reservation::get_fee() { 
+Fee Reservation::get_fee() { 
     return fee; 
 }
 
-Client* Reservation::get_client() const { 
+Client* Reservation::get_client(){ 
     return client; 
 }
 
-Room* Reservation::get_room() const { 
+Room* Reservation::get_room(){ 
     return room; 
 }
 
@@ -54,7 +45,7 @@ void Reservation::set_active(bool a) {
     active = a; 
 }
 
-void Reservation::set_fee(Fee &f) { 
+void Reservation::set_fee(Fee f) { 
     fee = f; 
 }
 

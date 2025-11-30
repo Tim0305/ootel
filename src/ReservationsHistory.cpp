@@ -55,8 +55,8 @@ void ReservationsHistory::release_reservation(Client& client, Room& room) {
 vector<Reservation> ReservationsHistory::find_by(Client &client, Room &room) {
   vector<Reservation> reservations;
   for (auto r : reservations) {
-    if (r.get_client().get_id() == client.get_id() &&
-        r.get_room().get_number() == room.get_number())
+    if (r.get_client()->get_id() == client.get_id() &&
+        r.get_room()->get_number() == room.get_number())
       reservations.push_back(r);
   }
   return reservations;
@@ -75,7 +75,7 @@ vector<Reservation> ReservationsHistory::find_by(const int id) {
 vector<Reservation> ReservationsHistory::find_by(Client &client) {
   vector<Reservation> reservations;
   for (auto r : reservations) {
-    if (r.get_client().get_id() == client.get_id()) {
+    if (r.get_client()->get_id() == client.get_id()) {
       reservations.push_back(r);
     }
   }
@@ -85,7 +85,7 @@ vector<Reservation> ReservationsHistory::find_by(Client &client) {
 vector<Reservation> ReservationsHistory::find_by(Room &room) {
   vector<Reservation> reservations;
   for (auto r : reservations) {
-    if (r.get_room().get_number() == room.get_number()) {
+    if (r.get_room()->get_number() == room.get_number()) {
       reservations.push_back(r);
     }
   }

@@ -23,7 +23,7 @@ public:
   int get_cp();
   std::vector<Room *> get_rooms();
   std::vector<User *> get_users();
-  ReservationsHistory& get_reservations_history();
+  ReservationsHistory get_reservations_history();
 
   // Setters
   void set_country(std::string country);

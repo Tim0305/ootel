@@ -44,6 +44,10 @@ void User::set_name(string name) {
   this->name = name;
 }
 
+void User::set_email(string email) {
+  this->email = email;
+}
+
 void User::set_birthdate(Datetime birthdate) {
   this->birthdate = birthdate;
 }

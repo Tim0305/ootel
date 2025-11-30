@@ -8,12 +8,12 @@
 
 class ReservationsHistory {
 private:
-  std::vector<Reservation*> reservations;
+  std::vector<Reservation> reservations;
 public:
   ReservationsHistory();
 
   // Getters
-  std::vector<Reservation*> get_reservations();
+  std::vector<Reservation> get_reservations();
 
   // Setters
   void create_reservation(Reservation reservation);

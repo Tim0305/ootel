@@ -25,7 +25,7 @@ vector<User*> Ootel::get_users() {
     return users;
 }
 
-ReservationsHistory& Ootel::get_reservations_history() {
+ReservationsHistory Ootel::get_reservations_history() {
     return reservations_history;
 }
 

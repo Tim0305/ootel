@@ -9,10 +9,9 @@ private:
   Datetime date;
 
 public:
-  Fee() : amount(0.0), date() {}
   Fee(double amount, Datetime date) : amount(amount), date(date) {}
-  double get_amount() const;
-  Datetime get_date() const;
+  double get_amount();
+  Datetime get_date();
   void set_amount(double amount);
   void set_date(Datetime date);
 };
