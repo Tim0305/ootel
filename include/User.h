@@ -19,7 +19,8 @@ public:
   User(int id, std::string name, std::string email, long phone_number,
        std::string password, Datetime birthdate, int type)
       : id(id), name(name), email(email), phone_number(phone_number),
-        password(password), birthdate(birthdate), type(type), is_logged(false) {}
+        password(password), birthdate(birthdate), type(type), is_logged(false) {
+  }
   virtual ~User() = default;
 
   // Constants

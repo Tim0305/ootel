@@ -1,5 +1,6 @@
 #include "User.h"
 #include "Datetime.h"
+#include <stdexcept>
 
 using namespace std;
 
@@ -27,6 +28,10 @@ Datetime User::get_birthdate() {
   return birthdate;
 }
 
+int User::get_type() {
+  return type;
+}
+
 void User::set_id(int id) {
   this->id = id;
 }
@@ -41,6 +46,13 @@ void User::set_name(string name) {
 
 void User::set_birthdate(Datetime birthdate) {
   this->birthdate = birthdate;
+}
+
+void User::set_type(int type) {
+  if (type == ADMINISTRATOR || type == CLIENT)
+    this->type = type;
+  else
+    throw runtime_error("Invalid type");
 }
 
 void User::update_password(string current_password, string new_password) {

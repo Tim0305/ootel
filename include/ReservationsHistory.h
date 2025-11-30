@@ -17,12 +17,14 @@ public:
   std::vector<Reservation> get_reservations();
 
   // Setters
-  void create_reservation(Reservation &reservation);
-  void delete_reservation(Reservation &reservation);
-  void update_reservation(int id, Reservation &reservation);
+  void create_reservation(Reservation reservation);
+  void delete_reservation(int id);
+  void update_reservation(int id, Reservation reservation);
+  void release_reservation(Client& client, Room& room);
+  std::vector<Reservation> find_by(Client &client,Room &room);
   std::vector<Reservation> find_by(const int id);
-  std::vector<Reservation> find_by(const Client &client);
-  std::vector<Reservation> find_by(const Room &room);
+  std::vector<Reservation> find_by(Client &client);
+  std::vector<Reservation> find_by(Room &room);
 };
 
 #endif // !RESERVATIONS_HISTORY_H

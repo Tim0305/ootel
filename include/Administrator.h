@@ -8,8 +8,7 @@
 class Administrator : public User {
 public:
   Administrator(int id, std::string name, std::string email, long phone_number,
-                std::string password, Datetime birthdate,
-                std::string username)
+                std::string password, Datetime birthdate)
       : User(id, name, email, phone_number, password, birthdate, User::ADMINISTRATOR) {}
 };
 

@@ -1,23 +1,26 @@
 #include "Room.h"
+#include <stdexcept>
+
+using namespace std;
 
 //Getters
 
-int Room::get_number() const { 
+int Room::get_number(){ 
     return number; 
 }
-int Room::get_type() const { 
+int Room::get_type(){ 
     return type; 
 }
-double Room::get_price() const { 
+double Room::get_price(){ 
     return price; 
 }
-bool Room::is_available() const { 
+bool Room::is_available(){ 
     return available; 
 }
-int Room::get_number_people() const {
+int Room::get_number_people(){
     return number_people;
 }
-int Room::get_number_beds() const{
+int Room::get_number_beds() {
     return number_beds;
 }
 
@@ -46,12 +49,9 @@ void Room::set_number_beds(int number_beds) {
 }
 
 //Opciones de reserva
-
 void Room::book(Client *client) {
-    if (!available) {
-        std::cout << "La habitación " << number << " no está disponible.\n";
-        return;
-    }
+    if (!available)
+        throw runtime_error("Room isn't available");
     this->client = client;
     this->available = false;
 }
