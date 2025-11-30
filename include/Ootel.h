@@ -17,6 +17,9 @@ private:
   ReservationsHistory reservations_history;
 
 public:
+  Ootel(std::string country, std::string state, int cp);
+  ~Ootel();
+
   // Getters
   std::string get_country();
   std::string get_state();
@@ -38,6 +41,7 @@ public:
   void delete_user(int id);
   User* find_user(std::string name);
   Room* find_room(int number);
+  User* login(std::string email, std::string password);
 };
 
 #endif // !OOTEL_H

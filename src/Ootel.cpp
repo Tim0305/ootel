@@ -1,8 +1,40 @@
 #include "Ootel.h"
+#include "Administrator.h"
+#include "Datetime.h"
+#include "ReservationsHistory.h"
 #include <stdexcept>
 #include <string>
 
 using namespace std;
+
+Ootel::Ootel(std::string country, std::string state, int cp) {
+    set_country(country);
+    set_state(state);
+    set_cp(cp);
+    
+    reservations_history = ReservationsHistory();
+
+    // Crear el administrador base
+    int id = users.size() + 1;
+    string name = "admin";
+    string email = "admin@ootel.com";
+    long phone_number = 0;
+    string password = "admin";
+    Datetime birthdate(2000, 5, 1);
+    User* administrator = new Administrator(id, name, email, phone_number, password, birthdate);
+    users.push_back(administrator);
+}
+
+Ootel::~Ootel() {
+    // Limpiar la memoria
+    for (auto u: users)
+        delete u;
+    users.clear();
+
+    for (auto r: rooms)
+        delete r;
+    rooms.clear();
+}
 
 // Getters
 string Ootel::get_country() {
@@ -126,5 +158,13 @@ Room* Ootel::find_room(int number) {
         if (r->get_number() == number)
             return r;
     }
+    return nullptr;
+}
+
+
+User* Ootel::login(std::string email, std::string password) {
+    for (auto u: users)
+        if (u->login(email, password))
+            return u;
     return nullptr;
 }

@@ -10,8 +10,6 @@ class ReservationsHistory {
 private:
   std::vector<Reservation> reservations;
 public:
-  ReservationsHistory();
-
   // Getters
   std::vector<Reservation> get_reservations();
 
