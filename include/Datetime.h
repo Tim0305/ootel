@@ -3,22 +3,29 @@
 
 class Datetime {
 private:
-  int year;
-  int month;
-  int day;
-  static bool is_valid(int year, int month, int day);
-  static bool is_leap_year(int year);
+    int year;
+    int month;
+    int day;
+
+    static bool is_valid(int year, int month, int day);
+    static bool is_leap_year(int year);
 
 public:
-  // Getters
-  int get_year();
-  int get_month();
-  int get_day();
+    Datetime();  
+    Datetime(int year, int month, int day);
 
-  // Setters
-  void set_year();
-  void set_month();
-  void set_day();
+    // Getters
+    int get_year() const;
+    int get_month() const;
+    int get_day() const;
+
+    // Setters 
+    void set_year(int year);
+    void set_month(int month);
+    void set_day(int day);
+
+    // Setter completo
+    bool set_date(int year, int month, int day);
 };
 
-#endif // !DATETIME_H
+#endif

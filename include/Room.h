@@ -32,7 +32,7 @@ public:
   Client *get_client();
   int get_number_people();
   int get_number_beds();
-  virtual int get_discount() = 0;
+  virtual int get_discount() const = 0;
 
   // Setters
   void set_number(int number);

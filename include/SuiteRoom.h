@@ -14,10 +14,11 @@ public:
       : Room(number, Room::SUITE, price, PEOPLE, BEDS) {}
 
   // Getters
-  int get_discount() override;
+  int get_discount();
 
   // Setters
   void set_discount(int discount) override;
 };
 
 #endif // !SUITE_ROOM_H
+

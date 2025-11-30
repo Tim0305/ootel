@@ -42,4 +42,4 @@ public:
   void set_room(Room &room);
 };
 
-#endif // !RESERVATION_H
+#endif
