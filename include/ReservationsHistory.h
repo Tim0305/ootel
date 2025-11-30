@@ -8,21 +8,24 @@
 
 class ReservationsHistory {
 private:
-  std::vector<Reservation> reservations;
-
+  std::vector<Reservation*> reservations;
 public:
   ReservationsHistory();
 
   // Getters
-  std::vector<Reservation> get_reservations();
+  std::vector<Reservation*> get_reservations();
 
   // Setters
-  void create_reservation(Reservation &reservation);
-  void delete_reservation(Reservation &reservation);
-  void update_reservation(int id, Reservation &reservation);
-  std::vector<Reservation> find_by(const int id);
-  std::vector<Reservation> find_by(const Client &client);
-  std::vector<Reservation> find_by(const Room &room);
+  void create_reservation(Reservation* r);
+  void delete_reservation(Reservation* r);
+  void update_reservation(int id, Reservation* reservation);
+
+  //Finders
+  Reservation* find_reservation(Client* client, int room_number);
+  std::vector<Reservation*> find_by(int id);
+  std::vector<Reservation*> find_by(const Client &client);
+  std::vector<Reservation*> find_by(const Room &room);
 };
 
 #endif // !RESERVATIONS_HISTORY_H
+

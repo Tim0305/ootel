@@ -1,19 +1,19 @@
 #include "Reservation.h"
 
 //Getters
-int Reservation::get_id() {
+int Reservation::get_id() const {
     return id;
 }
 
-Datetime Reservation::get_start_date() {
+Datetime Reservation::get_start_date() const{
     return start_date;
 }
 
-Datetime Reservation::get_end_date() {
+Datetime Reservation::get_end_date() const {
     return end_date;
 }
 
-bool Reservation::is_active() {
+bool Reservation::is_active() const {
     return active;
 }
 

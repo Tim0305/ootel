@@ -25,14 +25,14 @@ public:
   static const int SUITE = 2;
 
   // Getters
-  int get_number();
-  int get_type();
-  double get_price();
-  bool is_available();
-  Client *get_client();
-  int get_number_people();
-  int get_number_beds();
-  virtual int get_discount() = 0;
+  int get_number() const;
+  int get_type() const;
+  double get_price() const;
+  bool is_available() const;
+  Client *get_client() const;
+  int get_number_people() const;
+  int get_number_beds() const;
+  virtual int get_discount() const = 0;
 
   // Setters
   void set_number(int number);
@@ -46,5 +46,8 @@ public:
 
   void book(Client *client);
   void release();
+
 };
 #endif // !ROOM_H
+
+
