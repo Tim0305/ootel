@@ -24,6 +24,7 @@ public:
   static void clear_screen();
   static void sleep_for(int seconds);
   static void print_banner();
+  static void print_incorrect_option();
   virtual void print() = 0;
   std::optional<User> user_form();
   Ootel *get_ootel();

@@ -3,7 +3,6 @@
 #include <exception>
 #include <iostream>
 #include <optional>
-#include <stdexcept>
 #include <string>
 #include <thread>
 
@@ -75,4 +74,11 @@ optional<User> TUI::user_form() {
     cout << endl << e.what() << endl;
   }
   return nullopt;
+}
+
+void TUI::print_incorrect_option() {
+  cout << endl;
+  cout << "Incorrect option... Try again" << endl;
+  sleep_for(1);
+  clear_screen();
 }

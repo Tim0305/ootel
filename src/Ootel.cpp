@@ -58,7 +58,7 @@ vector<User*> Ootel::get_users() {
     return users;
 }
 
-ReservationsHistory Ootel::get_reservations_history() {
+ReservationsHistory& Ootel::get_reservations_history() {
     return reservations_history;
 }
 
@@ -163,9 +163,9 @@ Room* Ootel::find_room(int number) {
 }
 
 
-User* Ootel::login(std::string email, std::string password) {
+User* Ootel::log_in(std::string email, std::string password) {
     for (auto u: users)
-        if (u->login(email, password))
+        if (u->log_in(email, password))
             return u;
     return nullptr;
 }

@@ -1,4 +1,6 @@
 #include "TUILogin.h"
+#include "Ootel.h"
+#include "TUIClient.h"
 #include "User.h"
 #include <iostream>
 
@@ -7,29 +9,31 @@ using namespace std;
 void TUILogin::print() {
   int opcion;
   do {
-    print_menu();
+    clear_screen();
+    print_banner();
+    cout << "[1] - Log in" << endl;
+    cout << "[2] - Signup" << endl;
+    cout << "[3] - Exit" << endl;
+    cout << endl << endl << "> ";
     cin >> opcion;
 
     switch (opcion) {
     case 1:
-      login();
+      log_in();
       break;
     case 2:
-      signup();
+      create_account();
       break;
     case 3:
       get_manager()->go_back();
       break;
     default:
-      cout << endl;
-      cout << "Incorrect option... Try again" << endl;
-      sleep_for(1);
-      clear_screen();
+      print_incorrect_option();
     }
   } while (opcion < 1 || opcion > 3);
 }
 
-void TUILogin::login() {
+void TUILogin::log_in() {
   clear_screen();
   print_banner();
 
@@ -40,7 +44,7 @@ void TUILogin::login() {
   cout << "Password: ";
   cin >> password;
 
-  User *user = get_ootel()->login(email, password);
+  User *user = get_ootel()->log_in(email, password);
 
   if (user == nullptr) {
     cout << endl;
@@ -49,31 +53,31 @@ void TUILogin::login() {
     cout << endl;
     cout << "Welcome, " + user->get_name() << "!" << endl;
     sleep_for(1);
+
+    switch (user->get_type()) {
+    case User::ADMINISTRATOR:
+      break;
+    case User::CLIENT:
+      get_manager()->go_to(new TUIClient(get_ootel(), user, get_manager()));
+      break;
+    default:
+      cout << endl << "Invalid user... Try again" << endl;
+    }
   }
 }
 
-void TUILogin::signup() {
+void TUILogin::create_account() {
   clear_screen();
   print_banner();
-  
+
   auto user_optional = user_form();
-  if (user_optional)
-  {
+  if (user_optional) {
     cout << endl;
     cout << "Client created sucesfully... Login" << endl;
-    
+
     // Almacenar el objeto en el heap
     get_ootel()->create_user(new User(user_optional.value()));
     sleep_for(1);
     clear_screen();
   }
-}
-
-void TUILogin::print_menu() {
-    clear_screen();
-    print_banner();
-    cout << "[1] - Login" << endl;
-    cout << "[2] - Signup" << endl;
-    cout << "[3] - Exit" << endl;
-    cout << endl << endl << "> ";
 }

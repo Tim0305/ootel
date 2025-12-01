@@ -91,7 +91,7 @@ void User::update_profile(string name, string email, long phone_number, Datetime
   set_birthdate(birthdate);
 }
 
-bool User::login(string email, string password) {
+bool User::log_in(string email, string password) {
   if (email == get_email() && password == get_password())
     is_logged = true;
   else

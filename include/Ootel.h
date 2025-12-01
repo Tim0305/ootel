@@ -26,7 +26,7 @@ public:
   int get_cp();
   std::vector<Room *> get_rooms();
   std::vector<User *> get_users();
-  ReservationsHistory get_reservations_history();
+  ReservationsHistory& get_reservations_history();
 
   // Setters
   void set_country(std::string country);
@@ -41,7 +41,7 @@ public:
   void delete_user(int id);
   User* find_user(std::string name);
   Room* find_room(int number);
-  User* login(std::string email, std::string password);
+  User* log_in(std::string email, std::string password);
 };
 
 #endif // !OOTEL_H

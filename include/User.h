@@ -55,7 +55,7 @@ public:
   void update_profile(std::string name, std::string email, long phone_number,
                       Datetime birthdate);
 
-  bool login(std::string email, std::string password);
+  bool log_in(std::string email, std::string password);
   void sign_out();
 };
 

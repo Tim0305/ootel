@@ -5,9 +5,8 @@
 
 class TUILogin : public TUI {
 private:
-  void login();
-  void signup();
-  void print_menu();
+  void log_in();
+  void create_account();
 public:
   TUILogin(Ootel *ootel, TUIManager *manager) : TUI(ootel, manager) {}
   void print() override;

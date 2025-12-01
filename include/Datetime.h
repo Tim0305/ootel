@@ -1,6 +1,8 @@
 #ifndef DATETIME_H
 #define DATETIME_H
 
+#include <string>
+
 class Datetime {
 private:
     int year;
@@ -26,6 +28,7 @@ public:
 
     // Setter completo
     bool set_date(int year, int month, int day);
+    std::string to_string();
 };
 
 #endif
