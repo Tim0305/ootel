@@ -113,6 +113,11 @@ void TUIClient::print_reservations() {
         cout << "Date: " << r.get_fee().get_date().to_string() << endl;
         cout << "=========================================" << endl;
       }
+
+    cout << endl << endl;
+    cout << "Enter ENTER to exit...";
+    cin.ignore(); // Limpiar el buffer
+    cin.get();
   }
 }
 
@@ -121,7 +126,11 @@ void TUIClient::sign_out() {
 }
 
 void TUIClient::profile() {
+  clear_screen();
+  print_banner();
 
+  cout << endl << "Profile" << endl << endl;
+  cout << get_user()->to_string() << endl;
 }
 
 void TUIClient::bank_cards() {

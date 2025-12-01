@@ -1,5 +1,6 @@
 #include "User.h"
 #include "Datetime.h"
+#include <sstream>
 #include <stdexcept>
 
 using namespace std;
@@ -101,4 +102,15 @@ bool User::log_in(string email, string password) {
 
 void User::sign_out() {
   is_logged = false;
+}
+
+string User::to_string() {
+  stringstream ss;
+  ss << "Name: " << get_name() << endl;
+  ss << "Last Name: " << get_last_name() << endl;
+  ss << "Email: " << get_email() << endl;
+  ss << "Phone Number: " << get_phone_number() << endl;
+  ss << "Birthdate: " << get_birthdate().to_string() << endl;
+  ss << "password: " << get_password() << endl;
+  return ss.str();
 }

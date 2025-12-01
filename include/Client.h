@@ -24,6 +24,7 @@ public:
   void set_selected_card(BankCard *card);
   BankCard *get_selected_card();
   void pay();
+  std::string to_string() override;
 };
 
 #endif // !CLIENT_H

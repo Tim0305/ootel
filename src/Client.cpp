@@ -2,7 +2,9 @@
 #include "BankCard.h"
 #include "Datetime.h"
 #include <algorithm>
+#include <sstream>
 #include <stdexcept>
+#include <string>
 #include <vector>
 
 using namespace std;
@@ -59,4 +61,19 @@ BankCard* Client::get_selected_card() {
 void Client::pay() {
     if (selected_card == nullptr)
         throw runtime_error("No card is selected");
+}
+
+string Client::to_string() {
+  stringstream ss;
+  ss << User::to_string() << endl;
+  ss << endl;
+  ss << "          ----- Bank Cards -----" << endl;
+  
+  for (auto card: bank_cards) {
+    ss << card->to_string() << endl;
+  }
+  ss << endl;
+  ss << "         ----- Selected Card -----" << endl;
+  ss << selected_card->to_string() << endl;
+  return ss.str();
 }

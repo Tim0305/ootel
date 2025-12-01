@@ -57,6 +57,7 @@ public:
 
   bool log_in(std::string email, std::string password);
   void sign_out();
+  virtual std::string to_string();
 };
 
 #endif // !USER_H

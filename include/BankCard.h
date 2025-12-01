@@ -10,6 +10,9 @@ private:
   int expiration_year;
   int cvc;
 
+protected:
+  virtual bool is_valid() = 0;
+
 public:
   BankCard();
   BankCard(int number, std::string cardholder, int expiration_year, int cvc)
@@ -27,6 +30,8 @@ public:
   void set_expiration_year(int expiration_year);
   void set_cvc(int cvc);
   void set_cardholder(std::string cardholder);
+
+  std::string to_string();
 };
 
 #endif // !BANKCARD_H
