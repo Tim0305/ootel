@@ -4,6 +4,10 @@
 #include "TUI.h"
 
 class TUILogin : public TUI {
+private:
+  void login();
+  void signup();
+  void print_menu();
 public:
   TUILogin(Ootel *ootel, TUIManager *manager) : TUI(ootel, manager) {}
   void print() override;

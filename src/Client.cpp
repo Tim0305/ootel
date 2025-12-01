@@ -7,9 +7,9 @@
 
 using namespace std;
 
-Client::Client(int id, string name, string email, long phone_number,
+Client::Client(int id, string name, string last_name, string email, long phone_number,
                string password, Datetime birthdate)
-    : User(id, name, email, phone_number, password, birthdate, User::CLIENT),
+    : User(id, name, last_name, email, phone_number, password, birthdate, User::CLIENT),
       selected_card(nullptr) {}
 
 Client::~Client() {

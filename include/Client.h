@@ -13,7 +13,7 @@ private:
   BankCard *selected_card;
 
 public:
-  Client(int id, std::string name, std::string email, long phone_number,
+  Client(int id, std::string name, std::string last_name, std::string email, long phone_number,
          std::string password, Datetime birthdate);
   ~Client(); // Liberar la memoria de los punteros
 

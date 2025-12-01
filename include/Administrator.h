@@ -7,9 +7,9 @@
 
 class Administrator : public User {
 public:
-  Administrator(int id, std::string name, std::string email, long phone_number,
+  Administrator(int id, std::string name, std::string last_name, std::string email, long phone_number,
                 std::string password, Datetime birthdate)
-      : User(id, name, email, phone_number, password, birthdate, User::ADMINISTRATOR) {}
+      : User(id, name, last_name, email, phone_number, password, birthdate, User::ADMINISTRATOR) {}
 };
 
 #endif // !ADMINISTRATOR_H

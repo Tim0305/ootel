@@ -4,6 +4,7 @@
 #include "Ootel.h"
 #include "TUIManager.h"
 #include "User.h"
+#include <optional>
 #include <string>
 
 class TUI {
@@ -21,7 +22,10 @@ public:
   }
   static const std::string BANNER;
   static void clear_screen();
+  static void sleep_for(int seconds);
+  static void print_banner();
   virtual void print() = 0;
+  std::optional<User> user_form();
   Ootel *get_ootel();
   User *get_user();
   TUIManager* get_manager();

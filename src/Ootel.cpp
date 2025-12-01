@@ -17,11 +17,12 @@ Ootel::Ootel(std::string country, std::string state, int cp) {
     // Crear el administrador base
     int id = users.size() + 1;
     string name = "admin";
+    string last_name = "";
     string email = "admin@ootel.com";
     long phone_number = 0;
     string password = "admin";
     Datetime birthdate(2000, 5, 1);
-    User* administrator = new Administrator(id, name, email, phone_number, password, birthdate);
+    User* administrator = new Administrator(id, name, last_name, email, phone_number, password, birthdate);
     users.push_back(administrator);
 }
 
