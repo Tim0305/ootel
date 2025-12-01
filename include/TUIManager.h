@@ -12,6 +12,7 @@ private:
   TUI* current_view;
 public:
   TUIManager() : current_view(nullptr) {}
+  ~TUIManager();
   void go_to(TUI* view);
   void go_back();
   TUI* get_current_view();

@@ -20,6 +20,8 @@ public:
     // Limpiar la pantalla
     clear_screen();
   }
+  virtual ~TUI() = default;
+
   static const std::string BANNER;
   static void clear_screen();
   static void sleep_for(int seconds);

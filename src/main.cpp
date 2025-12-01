@@ -14,6 +14,8 @@ int main() {
   do {
     manager->get_current_view()->print();
   } while (manager->get_current_view() != nullptr);
-
+  
+  delete ootel;
+  delete manager;
   return 0;
 }

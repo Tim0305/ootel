@@ -1,4 +1,11 @@
 #include "TUIManager.h"
+#include "TUI.h"
+
+TUIManager::~TUIManager() {
+  for (TUI* tui: stack_views)
+    delete tui;
+  stack_views.clear();
+}
 
 void TUIManager::go_to(TUI* view) {
   stack_views.push_back(view);

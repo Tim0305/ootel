@@ -52,7 +52,6 @@ void TUILogin::log_in() {
   } else {
     cout << endl;
     cout << "Welcome, " + user->get_name() << "!" << endl;
-    sleep_for(1);
 
     switch (user->get_type()) {
     case User::ADMINISTRATOR:
@@ -64,6 +63,7 @@ void TUILogin::log_in() {
       cout << endl << "Invalid user... Try again" << endl;
     }
   }
+  sleep_for(1);
 }
 
 void TUILogin::create_account() {
@@ -77,7 +77,7 @@ void TUILogin::create_account() {
 
     // Almacenar el objeto en el heap
     get_ootel()->create_user(new User(user_optional.value()));
-    sleep_for(1);
     clear_screen();
   }
+  sleep_for(1);
 }
