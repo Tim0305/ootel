@@ -15,11 +15,7 @@ private:
 
 public:
   TUI(Ootel *ootel, TUIManager *manager) : TUI(ootel, nullptr, manager) {}
-  TUI(Ootel *ootel, User *user, TUIManager *manager)
-      : ootel(ootel), user(user), manager(manager) {
-    // Limpiar la pantalla
-    clear_screen();
-  }
+  TUI(Ootel *ootel, User *user, TUIManager *manager);
   virtual ~TUI() = default;
 
   static const std::string BANNER;
@@ -27,6 +23,7 @@ public:
   static void sleep_for(int seconds);
   static void print_banner();
   static void print_incorrect_option();
+  static void press_enter_continue();
   virtual void print() = 0;
   std::optional<User> user_form();
   Ootel *get_ootel();

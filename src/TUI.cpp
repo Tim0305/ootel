@@ -3,11 +3,23 @@
 #include <exception>
 #include <iostream>
 #include <optional>
+#include <stdexcept>
 #include <string>
 #include <thread>
 
 using namespace std;
 
+TUI::TUI(Ootel *ootel, User *user, TUIManager *manager) {
+  if (manager == nullptr)
+    throw invalid_argument("Manager must exist");
+
+  this->ootel = ootel;
+  this->user = user;
+  this->manager = manager;
+
+  // Limpiar la pantalla
+  clear_screen();
+}
 /*
 const string TUI::BANNER = R"(
     ███████       ███████    ███████████ ██████████ █████
@@ -93,4 +105,10 @@ void TUI::print_incorrect_option() {
   cout << "Incorrect option... Try again" << endl;
   sleep_for(1);
   clear_screen();
+}
+
+void TUI::press_enter_continue() {
+  cout << "Press ENTER to exit...";
+  cin.ignore(); // Limpiar el buffer
+  cin.get();
 }

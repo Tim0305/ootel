@@ -1,6 +1,7 @@
 #include "TUIManager.h"
 #include "TUI.h"
 
+using namespace std;
 TUIManager::~TUIManager() {
   for (TUI* tui: stack_views)
     delete tui;
@@ -14,7 +15,7 @@ void TUIManager::go_to(TUI* view) {
 
 void TUIManager::go_back() {
   if (stack_views.empty()) return;
-
+  
   stack_views.pop_back();
 
   if (stack_views.empty())

@@ -34,7 +34,7 @@ void TUIClient::print() {
     default:
       print_incorrect_option();
     }
-  } while (opcion < 1 || opcion > 3);
+  } while (opcion < 1 || opcion > 4);
 }
 
 void TUIClient::reservations() {
@@ -114,15 +114,17 @@ void TUIClient::print_reservations() {
         cout << "=========================================" << endl;
       }
 
-    cout << endl << endl;
-    cout << "Enter ENTER to exit...";
-    cin.ignore(); // Limpiar el buffer
-    cin.get();
+    cout << endl;
+    press_enter_continue();
   }
 }
 
 void TUIClient::sign_out() {
   get_user()->sign_out();
+  cout << endl << "Signing out..." << endl;
+  get_manager()->go_back();
+  sleep_for(1);
+  
 }
 
 void TUIClient::profile() {
@@ -131,6 +133,9 @@ void TUIClient::profile() {
 
   cout << endl << "Profile" << endl << endl;
   cout << get_user()->to_string() << endl;
+
+  cout << endl;
+  press_enter_continue();
 }
 
 void TUIClient::bank_cards() {
