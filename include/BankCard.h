@@ -5,28 +5,28 @@
 
 class BankCard {
 private:
-  int number;
+  std::string number;
   std::string cardholder;
   int expiration_year;
   int cvc;
+  static bool is_number_digits(const std::string &number);
 
 protected:
-  virtual bool is_valid() = 0;
+  virtual bool is_valid(std::string number) = 0;
 
 public:
   BankCard();
-  BankCard(int number, std::string cardholder, int expiration_year, int cvc)
-      : number(number), cardholder(cardholder),
-        expiration_year(expiration_year), cvc(cvc) {}
+  BankCard(std::string cardholder, int expiration_year, int cvc);
+  virtual ~BankCard() = default;
 
   // Getters
-  int get_number();
-  int get_expiration_year();
-  int get_cvc();
-  std::string get_cardholder();
+  std::string get_number() const;
+  int get_expiration_year() const;
+  int get_cvc() const;
+  std::string get_cardholder() const;
 
   // Setters
-  void set_number(int number);
+  void set_number(std::string number);
   void set_expiration_year(int expiration_year);
   void set_cvc(int cvc);
   void set_cardholder(std::string cardholder);

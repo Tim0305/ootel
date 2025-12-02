@@ -1,29 +1,37 @@
 #include "Visa.h"
+#include "BankCard.h"
 #include <ctime>
 
-bool Visa::is_valid() {
-  int digits = 0;
-  long long temp = number;
-  while (temp > 0) {
-    temp /= 10;
-    digits++;
-  }
-  if (digits != 16)
-    return false;
-  std::string numStr = std::to_string(number);
-  if (numStr[0] != '4')
-    return false;
-  time_t t = time(nullptr);
-  tm now;
-  localtime_s(&now, &t);
-  int currentDate = (now.tm_year + 1900) * 100 + (now.tm_mon + 1);
+using namespace std;
 
-  if (expire_date <= currentDate)
-    return false;
-
-  return true;
+Visa::Visa(string number, string cardholder, int expire_year, int cvc): BankCard(cardholder, expire_year, cvc) {
+  set_number(number);
 }
 
-bool Visa::isValid() const {
-  return is_valid(number, expire_date) && (cvc >= 100 && cvc <= 999);
+bool Visa::is_valid(string number) {
+    // 1. Debe iniciar con '4'
+    if (number.empty() || number[0] != '4') return false;
+
+    // 2. Longitud válida para Visa: 13, 16 o 19
+    if (number.size() != 13 && number.size() != 16 && number.size() != 19)
+        return false;
+
+    // 3. Validar con algoritmo de Luhn
+    int suma = 0;
+    bool doble = false;
+
+    // Recorrer de derecha a izquierda
+    for (int i = number.size() - 1; i >= 0; i--) {
+        int dig = number[i] - '0';
+
+        if (doble) {
+            dig *= 2;
+            if (dig > 9) dig -= 9;
+        }
+
+        suma += dig;
+        doble = !doble;
+    }
+
+    return (suma % 10 == 0);
 }

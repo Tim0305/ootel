@@ -6,9 +6,11 @@
 
 class Mastercard : public BankCard {
 protected:
-  bool is_valid() override;
+  bool is_valid(std::string number) override;
+
 public:
-  Mastercard(int number, std::string cardholder, int expire_date, int cvc): BankCard(number, cardholder, expire_date, cvc) {}
+  Mastercard(std::string number, std::string cardholder, int expire_year,
+             int cvc);
 };
 
 #endif // !MASTERCARD_H
