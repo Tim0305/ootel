@@ -17,6 +17,7 @@ private:
   void update_bank_card();
   void delete_bank_card();
   void print_bank_cards();
+  void see_bank_cards();
   void book();
   void update_reservation();
   void delete_reservation();

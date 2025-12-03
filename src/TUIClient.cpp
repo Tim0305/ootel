@@ -60,7 +60,7 @@ void TUIClient::reservations() {
   do {
     clear_screen();
     print_banner();
-    
+
     cout << "Reservations" << endl << endl;
     cout << "[1] - Book" << endl;
     cout << "[2] - See reservations" << endl;
@@ -193,7 +193,9 @@ void TUIClient::bank_cards() {
     bank_cards();
     break;
   case 5:
-    print_bank_cards();
+    see_bank_cards();
+    // Mostrar el menu de bank cards
+    bank_cards();
     break;
   case 6:
     break;
@@ -262,13 +264,74 @@ void TUIClient::add_bank_card() {
   sleep_for(MESSAGE_WAIT_TIME_SECONDS);
 }
 
-void TUIClient::select_bank_card() {}
+void TUIClient::select_bank_card() {
+  clear_screen();
+  print_banner();
+
+  cout << "Bank Cards" << endl << endl;
+
+  Client *c = dynamic_cast<Client *>(get_user());
+  if (c->get_bank_cards().empty()) {
+    cout << "No card has been created..." << endl;
+    press_enter_continue();
+  } else {
+    print_bank_cards();
+
+    int index;
+    cout << "(-1 to return)" << endl;
+    cout << "> ";
+    cin >> index;
+
+    if (index != -1) {
+      try {
+        c->set_selected_card(index - 1);
+
+        cout << endl
+             << "Bank Card " << index << " has been selected successfully..."
+             << endl;
+      } catch (const exception &e) {
+        cout << endl << e.what() << endl;
+      }
+      sleep_for(MESSAGE_WAIT_TIME_SECONDS);
+    }
+  }
+}
 
 void TUIClient::update_bank_card() {}
 
 void TUIClient::delete_bank_card() {}
 
-void TUIClient::print_bank_cards() {}
+void TUIClient::print_bank_cards() {
+  Client *c = dynamic_cast<Client *>(get_user());
+  for (int i = 0; i < c->get_bank_cards().size(); i++) {
+    cout << "======================================" << endl;
+    if (c->get_bank_cards()[i] == c->get_selected_card())
+      cout << "[*] SELECTED" << endl;
+    else
+      cout << "[ ]" << endl;
+
+    cout << "No. " << i + 1 << endl;
+    cout << c->get_bank_cards()[i]->to_string();
+    cout << "======================================" << endl;
+    cout << endl;
+  }
+}
+
+void TUIClient::see_bank_cards() {
+  clear_screen();
+  print_banner();
+
+  cout << "Bank Cards" << endl << endl;
+
+  Client *c = dynamic_cast<Client *>(get_user());
+
+  if (c->get_bank_cards().empty())
+    cout << "No card has been created..." << endl;
+  else
+    print_bank_cards();
+
+  press_enter_continue();
+}
 
 // Profile
 void TUIClient::profile() {

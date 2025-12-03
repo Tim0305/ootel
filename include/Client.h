@@ -22,7 +22,7 @@ public:
   void add_card(BankCard *card);
   void remove_bank_card(int index);
   void update_bank_card(int index, BankCard *new_card);
-  void set_selected_card(BankCard *card);
+  void set_selected_card(int index);
   BankCard *get_selected_card();
   void pay();
   std::string to_string() override;

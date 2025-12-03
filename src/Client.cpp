@@ -53,11 +53,11 @@ void Client::update_bank_card(int index, BankCard *card) {
     throw runtime_error("Invalid index");
 }
 
-void Client::set_selected_card(BankCard *card) {
-  if (find(bank_cards.begin(), bank_cards.end(), card) != bank_cards.end())
-    selected_card = card;
+void Client::set_selected_card(int index) {
+  if (index < 0 || index >= bank_cards.size())
+    throw runtime_error("Index error. Card doesn't exist");
   else
-    throw runtime_error("Card doesn't exist");
+    selected_card = bank_cards[index];
 }
 
 BankCard *Client::get_selected_card() { return selected_card; }
