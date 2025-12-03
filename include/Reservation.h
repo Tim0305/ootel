@@ -39,6 +39,8 @@ public:
   void set_fee(Fee fee);
   void set_client(Client *client);
   void set_room(Room *room);
+
+  std::string to_string();
 };
 
 #endif

@@ -78,15 +78,23 @@ void TUIClient::reservations() {
   switch (opcion) {
   case 1:
     book();
+    // Mostrar el menu de reservaciones
+    reservations();
     break;
   case 2:
     print_reservations();
+    // Mostrar el menu de reservaciones
+    reservations();
     break;
   case 3:
     update_reservation();
+    // Mostrar el menu de reservaciones
+    reservations();
     break;
   case 4:
     delete_reservation();
+    // Mostrar el menu de reservaciones
+    reservations();
     break;
   case 5:
     break;
@@ -100,52 +108,32 @@ void TUIClient::print_reservations() {
   Client *c = dynamic_cast<Client *>(get_user());
 
   if (c != nullptr) {
+    clear_screen();
+    print_banner();
+
+    cout << "Reservations" << endl << endl;
+
     vector<Reservation> reservations =
         get_ootel()->get_reservations_history().find_by(*c);
 
     if (reservations.empty())
-      cout << endl << "No reservations were found..." << endl;
+      cout << "No reservations were found..." << endl;
     else
-      for (auto r : reservations) {
-        string active = r.is_active() ? "TRUE" : "FALSE";
-
-        string type_room;
-        switch (r.get_room()->get_type()) {
-        case Room::STANDARD:
-          type_room = "STANDARD";
-          break;
-        case Room::DOUBLE:
-          type_room = "DOUBLE";
-          break;
-        case Room::SUITE:
-          type_room = "SUITE";
-          break;
-        }
-
+      for (int i = 0; i < reservations.size(); i++) {
         cout << endl;
         cout << "=========================================" << endl;
-        cout << "ID: " << r.get_id() << endl;
-        cout << "Start Day: " << r.get_start_date().to_string() << endl;
-        cout << "End Day: " << r.get_end_date().to_string() << endl;
-        cout << "Active " << active << endl;
-        cout << endl;
-        cout << "              ----- Room ----- " << endl;
-        cout << "Number: " << r.get_room()->get_number() << endl;
-        cout << "Type: " << type_room << endl;
-        cout << "Price: " << r.get_room()->get_price();
-        cout << endl;
-        cout << "              ----- Fee ----- " << endl;
-        cout << "Amount: " << r.get_fee().get_amount() << endl;
-        cout << "Date: " << r.get_fee().get_date().to_string() << endl;
+        cout << "[" << i + 1 << "]" << endl;
+        cout << reservations[i].to_string();
         cout << "=========================================" << endl;
       }
 
-    cout << endl;
     press_enter_continue();
   }
 }
 
-void TUIClient::update_reservation() {}
+void TUIClient::update_reservation() {
+
+}
 
 void TUIClient::delete_reservation() {}
 

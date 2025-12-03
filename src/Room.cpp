@@ -1,62 +1,63 @@
 #include "Room.h"
+#include <sstream>
 #include <stdexcept>
 
 using namespace std;
 
-//Getters
+// Getters
 
-int Room::get_number(){ 
-    return number; 
-}
-int Room::get_type(){ 
-    return type; 
-}
-double Room::get_price(){ 
-    return price; 
-}
-bool Room::is_available(){ 
-    return available; 
-}
-int Room::get_number_people(){
-    return number_people;
-}
-int Room::get_number_beds() {
-    return number_beds;
-}
+int Room::get_number() { return number; }
+int Room::get_type() { return type; }
+double Room::get_price() { return price; }
+bool Room::is_available() { return available; }
+int Room::get_number_people() { return number_people; }
+int Room::get_number_beds() { return number_beds; }
 
 // Setters
 
-void Room::set_number(int number) {
-    this->number = number;
-}
-void Room::set_type(int type) {
-    this->type = type;
-}
-void Room::set_price(double price) {
-    this->price = price;
-}
-void Room::set_available(bool available) {
-    this->available = available;
-}
-void Room::set_client(Client *client) {
-    this->client = client;
-}
+void Room::set_number(int number) { this->number = number; }
+void Room::set_type(int type) { this->type = type; }
+void Room::set_price(double price) { this->price = price; }
+void Room::set_available(bool available) { this->available = available; }
+void Room::set_client(Client *client) { this->client = client; }
 void Room::set_number_people(int number_people) {
-    this->number_people = number_people;
+  this->number_people = number_people;
 }
-void Room::set_number_beds(int number_beds) {
-    this->number_beds = number_beds;
-}
+void Room::set_number_beds(int number_beds) { this->number_beds = number_beds; }
 
-//Opciones de reserva
+// Opciones de reserva
 void Room::book(Client *client) {
-    if (!available)
-        throw runtime_error("Room isn't available");
-    this->client = client;
-    this->available = false;
+  if (!available)
+    throw runtime_error("Room isn't available");
+  this->client = client;
+  this->available = false;
 }
 
 void Room::release() {
-    this->client = nullptr;
-    this->available = true;
+  this->client = nullptr;
+  this->available = true;
+}
+
+string Room::to_string() {
+  string type_room;
+  switch (type) {
+  case Room::STANDARD:
+    type_room = "STANDARD";
+    break;
+  case Room::DOUBLE:
+    type_room = "DOUBLE";
+    break;
+  case Room::SUITE:
+    type_room = "SUITE";
+    break;
+  }
+
+  stringstream ss;
+  ss << "Number: " << number << endl;
+  ss << "Type: " << type_room << endl;
+  ss << "Price: $" << price << endl;
+  ss << "People: " << number_people << endl;
+  ss << "Beds: " << number_beds << endl;
+
+  return ss.str();
 }

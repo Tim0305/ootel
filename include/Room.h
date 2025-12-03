@@ -46,5 +46,7 @@ public:
 
   void book(Client *client);
   void release();
+
+  std::string to_string();
 };
 #endif // !ROOM_H

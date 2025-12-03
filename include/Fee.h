@@ -14,6 +14,7 @@ public:
   Datetime get_date();
   void set_amount(double amount);
   void set_date(Datetime date);
+  std::string to_string();
 };
 
 #endif // !FEE_H
