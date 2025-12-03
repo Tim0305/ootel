@@ -2,7 +2,6 @@
 #include "BankCard.h"
 #include "Datetime.h"
 #include "User.h"
-#include <algorithm>
 #include <sstream>
 #include <stdexcept>
 #include <string>
@@ -58,6 +57,13 @@ void Client::set_selected_card(int index) {
     throw runtime_error("Index error. Card doesn't exist");
   else
     selected_card = bank_cards[index];
+}
+
+BankCard* Client::get_bank_card(int index) {
+  if (index >= 0 && index < bank_cards.size())
+    return bank_cards[index];
+  else
+    throw invalid_argument("Invalid index");
 }
 
 BankCard *Client::get_selected_card() { return selected_card; }

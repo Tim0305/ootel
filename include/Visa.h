@@ -9,7 +9,7 @@ protected:
   bool is_valid(std::string number) override;
 
 public:
-  Visa(std::string number, std::string cardholder, int expire_year, int cvc);
+  Visa(std::string number, std::string cardholder, int expiration_year, int cvc);
 };
 
 #endif // !VISA_H

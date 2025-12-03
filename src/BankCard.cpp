@@ -5,10 +5,11 @@
 
 using namespace std;
 
-BankCard::BankCard(std::string cardholder, int expiration_year, int cvc) {
+BankCard::BankCard(std::string cardholder, int expiration_year, int cvc, int type) {
   set_cardholder(cardholder);
   set_expiration_year(expiration_year);
   set_cvc(cvc);
+  set_type(type);
 }
 
 bool BankCard::is_number_digits(const string &number) {
@@ -26,6 +27,10 @@ int BankCard::get_expiration_year() const { return expiration_year; }
 int BankCard::get_cvc() const { return cvc; }
 
 string BankCard::get_cardholder() const { return cardholder; }
+
+int BankCard::get_type() const{
+  return type;
+}
 
 void BankCard::set_number(string number) {
   if (BankCard::is_number_digits(number))
@@ -50,6 +55,10 @@ void BankCard::set_cvc(int cvc) {
 
 void BankCard::set_cardholder(string cardholder) {
   this->cardholder = cardholder;
+}
+
+void BankCard::set_type(int type) {
+  this->type = type;
 }
 
 string BankCard::to_string() {

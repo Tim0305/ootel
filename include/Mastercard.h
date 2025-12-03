@@ -9,7 +9,7 @@ protected:
   bool is_valid(std::string number) override;
 
 public:
-  Mastercard(std::string number, std::string cardholder, int expire_year,
+  Mastercard(std::string number, std::string cardholder, int expiration_year,
              int cvc);
 };
 

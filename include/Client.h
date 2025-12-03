@@ -21,8 +21,9 @@ public:
   std::vector<BankCard *> get_bank_cards();
   void add_card(BankCard *card);
   void remove_bank_card(int index);
-  void update_bank_card(int index, BankCard *new_card);
+  void update_bank_card(int index, BankCard* card);
   void set_selected_card(int index);
+  BankCard* get_bank_card(int index);
   BankCard *get_selected_card();
   void pay();
   std::string to_string() override;

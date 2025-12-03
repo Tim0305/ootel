@@ -5,8 +5,8 @@
 using namespace std;
 
 Mastercard::Mastercard(string number, string cardholder,
-                       int expire_year, int cvc)
-    : BankCard(cardholder, expire_year, cvc) {
+                       int expiration_year, int cvc)
+    : BankCard(cardholder, expiration_year, cvc, BankCard::MASTERCARD) {
   set_number(number);
 }
 

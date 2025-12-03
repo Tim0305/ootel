@@ -182,7 +182,7 @@ void TUIClient::bank_cards() {
     // Mostrar el menu de bank cards
     bank_cards();
     break;
-  case3:
+  case 3:
     update_bank_card();
     // Mostrar el menu de bank cards
     bank_cards();
@@ -271,33 +271,99 @@ void TUIClient::select_bank_card() {
   cout << "Bank Cards" << endl << endl;
 
   Client *c = dynamic_cast<Client *>(get_user());
-  if (c->get_bank_cards().empty()) {
-    cout << "No card has been created..." << endl;
-    press_enter_continue();
-  } else {
-    print_bank_cards();
+  if (c != nullptr) {
+    if (c->get_bank_cards().empty()) {
+      cout << "No card has been created..." << endl;
+      press_enter_continue();
+    } else {
+      print_bank_cards();
 
-    int index;
-    cout << "(-1 to return)" << endl;
-    cout << "> ";
-    cin >> index;
+      int index;
+      cout << "(-1 to return)" << endl;
+      cout << "> ";
+      cin >> index;
 
-    if (index != -1) {
-      try {
-        c->set_selected_card(index - 1);
+      if (index != -1) {
+        try {
+          c->set_selected_card(index - 1);
 
-        cout << endl
-             << "Bank Card " << index << " has been selected successfully..."
-             << endl;
-      } catch (const exception &e) {
-        cout << endl << e.what() << endl;
+          cout << endl
+               << "Bank Card " << index << " has been selected successfully..."
+               << endl;
+        } catch (const exception &e) {
+          cout << endl << e.what() << endl;
+        }
+        sleep_for(MESSAGE_WAIT_TIME_SECONDS);
       }
-      sleep_for(MESSAGE_WAIT_TIME_SECONDS);
     }
   }
 }
 
-void TUIClient::update_bank_card() {}
+void TUIClient::update_bank_card() {
+  clear_screen();
+  print_banner();
+
+  cout << "Bank Cards" << endl << endl;
+
+  Client *c = dynamic_cast<Client *>(get_user());
+  if (c != nullptr) {
+    if (c->get_bank_cards().empty()) {
+      cout << "No card has been created..." << endl;
+      press_enter_continue();
+    } else {
+      print_bank_cards();
+
+      int index;
+      cout << "(-1 to return)" << endl;
+      cout << "> ";
+      cin >> index;
+
+      if (index != -1) {
+        try {
+          clear_screen();
+          print_banner();
+
+          cout << "Bank Cards" << endl << endl;
+
+          string number;
+          string cardholder;
+          int expiration_year;
+          int cvc;
+
+          cin.ignore(); // Limpiar el buffer
+
+          cout << "Number: ";
+          getline(cin, number);
+          cout << "Card Holder: ";
+          getline(cin, cardholder);
+          cout << "Expiration Year: ";
+          cin >> expiration_year;
+          cout << "CVC: ";
+          cin >> cvc;
+
+          switch (c->get_bank_card(index - 1)->get_type()) {
+          case BankCard::VISA:
+            c->update_bank_card(
+                index - 1, new Visa(number, cardholder, expiration_year, cvc));
+            cout << endl << "Bank Card updated successfully..." << endl;
+            break;
+          case BankCard::MASTERCARD:
+            c->update_bank_card(
+                index - 1,
+                new Mastercard(number, cardholder, expiration_year, cvc));
+            cout << endl << "Bank Card updated successfully..." << endl;
+            break;
+          default:
+            cout << endl << "Invalid type for BankCard" << endl;
+          }
+        } catch (const exception &e) {
+          cout << endl << e.what() << endl;
+        }
+        sleep_for(MESSAGE_WAIT_TIME_SECONDS);
+      }
+    }
+  }
+}
 
 void TUIClient::delete_bank_card() {}
 
@@ -305,13 +371,13 @@ void TUIClient::print_bank_cards() {
   Client *c = dynamic_cast<Client *>(get_user());
   for (int i = 0; i < c->get_bank_cards().size(); i++) {
     cout << "======================================" << endl;
-    if (c->get_bank_cards()[i] == c->get_selected_card())
+    if (c->get_bank_card(i) == c->get_selected_card())
       cout << "[*] SELECTED" << endl;
     else
       cout << "[ ]" << endl;
 
     cout << "No. " << i + 1 << endl;
-    cout << c->get_bank_cards()[i]->to_string();
+    cout << c->get_bank_card(i)->to_string();
     cout << "======================================" << endl;
     cout << endl;
   }

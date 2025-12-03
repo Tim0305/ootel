@@ -4,7 +4,7 @@
 
 using namespace std;
 
-Visa::Visa(string number, string cardholder, int expire_year, int cvc): BankCard(cardholder, expire_year, cvc) {
+Visa::Visa(string number, string cardholder, int expiration_year, int cvc): BankCard(cardholder, expiration_year, cvc, BankCard::VISA) {
   set_number(number);
 }
 
