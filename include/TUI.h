@@ -13,6 +13,8 @@ private:
   User *user;
   TUIManager *manager;
 
+protected:
+  static const int MESSAGE_WAIT_TIME_SECONDS = 1;
 public:
   TUI(Ootel *ootel, TUIManager *manager) : TUI(ootel, nullptr, manager) {}
   TUI(Ootel *ootel, User *user, TUIManager *manager);
@@ -24,7 +26,7 @@ public:
   static void print_banner();
   static void print_incorrect_option();
   static void press_enter_continue();
-  virtual void print() = 0;
+  virtual void run() = 0;
   std::optional<User> user_form();
   Ootel *get_ootel();
   User *get_user();

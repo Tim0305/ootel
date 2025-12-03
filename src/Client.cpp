@@ -1,6 +1,7 @@
 #include "Client.h"
 #include "BankCard.h"
 #include "Datetime.h"
+#include "User.h"
 #include <algorithm>
 #include <sstream>
 #include <stdexcept>
@@ -9,10 +10,15 @@
 
 using namespace std;
 
-Client::Client(int id, string name, string last_name, string email, long phone_number,
-               string password, Datetime birthdate)
-    : User(id, name, last_name, email, phone_number, password, birthdate, User::CLIENT),
+Client::Client(int id, string name, string last_name, string email,
+               long phone_number, string password, Datetime birthdate)
+    : User(id, name, last_name, email, phone_number, password, birthdate,
+           User::CLIENT),
       selected_card(nullptr) {}
+
+Client::Client(const User &user) : User(user), selected_card(nullptr) {
+  set_type(User::CLIENT);
+}
 
 Client::~Client() {
   for (BankCard *card : bank_cards)
@@ -54,26 +60,33 @@ void Client::set_selected_card(BankCard *card) {
     throw runtime_error("Card doesn't exist");
 }
 
-BankCard* Client::get_selected_card() {
-    return selected_card;
-}
+BankCard *Client::get_selected_card() { return selected_card; }
 
 void Client::pay() {
-    if (selected_card == nullptr)
-        throw runtime_error("No card is selected");
+  if (selected_card == nullptr)
+    throw runtime_error("No card is selected");
 }
 
 string Client::to_string() {
   stringstream ss;
   ss << User::to_string() << endl;
-  ss << endl;
-  ss << "          ----- Bank Cards -----" << endl;
-  
-  for (auto card: bank_cards) {
-    ss << card->to_string() << endl;
-  }
+
   ss << endl;
   ss << "         ----- Selected Card -----" << endl;
-  ss << selected_card->to_string() << endl;
+  if (selected_card == nullptr)
+    ss << "None" << endl;
+  else
+    ss << selected_card->to_string() << endl;
+
+  ss << endl;
+  ss << "          ----- Bank Cards -----" << endl;
+  if (bank_cards.empty())
+    ss << "Empty" << endl;
+  else
+    for (int i = 0; i < bank_cards.size(); i++) {
+      ss << "[" << i + 1 << "]" << endl;
+      ss << bank_cards[i]->to_string() << endl;
+    }
+
   return ss.str();
 }

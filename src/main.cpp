@@ -12,7 +12,7 @@ int main() {
 
   // main loop
   do {
-    manager->get_current_view()->print();
+    manager->get_current_view()->run();
   } while (manager->get_current_view() != nullptr);
   
   delete ootel;

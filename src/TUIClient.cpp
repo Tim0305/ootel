@@ -1,48 +1,67 @@
 #include "TUIClient.h"
+#include "BankCard.h"
 #include "Client.h"
+#include "Mastercard.h"
 #include "Reservation.h"
+#include "Visa.h"
 
+#include <cstdio>
+#include <exception>
 #include <iostream>
+#include <optional>
+#include <stdexcept>
+#include <string>
 using namespace std;
 
-void TUIClient::print() {
+TUIClient::TUIClient(Ootel *ootel, User *user, TUIManager *manager)
+    : TUI(ootel, user, manager) {
+  if (user == nullptr)
+    throw invalid_argument("User must exist");
+}
+
+// Menu
+void TUIClient::run() {
   int opcion;
   do {
     clear_screen();
     print_banner();
+    cout << "Client" << endl << endl;
     cout << "[1] - Reservations" << endl;
-    cout << "[2] - BankCards" << endl;
+    cout << "[2] - Bank Cards" << endl;
     cout << "[3] - Profile" << endl;
     cout << "[4] - Signout" << endl;
     cout << endl << endl;
     cout << "> ";
     cin >> opcion;
 
-    switch (opcion) {
-    case 1:
-      reservations();
-      break;
-    case 2:
-      bank_cards();
-      break;
-    case 3:
-      profile();
-      break;
-    case 4:
-      sign_out();
-      break;
-    default:
+    if (opcion < 1 || opcion > 4)
       print_incorrect_option();
-    }
   } while (opcion < 1 || opcion > 4);
+
+  switch (opcion) {
+  case 1:
+    reservations();
+    break;
+  case 2:
+    bank_cards();
+    break;
+  case 3:
+    profile();
+    break;
+  case 4:
+    sign_out();
+    break;
+  }
 }
 
+// Reservations
 void TUIClient::reservations() {
   int opcion;
   do {
     clear_screen();
     print_banner();
-
+    
+    cout << "Reservations" << endl << endl;
     cout << "[1] - Book" << endl;
     cout << "[2] - See reservations" << endl;
     cout << "[3] - Update reservation" << endl;
@@ -52,27 +71,34 @@ void TUIClient::reservations() {
     cout << "> ";
     cin >> opcion;
 
-    switch (opcion) {
-    case 1:
-      break;
-    case 2:
-      print_reservations();
-      break;
-    case 3:
-      break;
-    case 4:
-      break;
-    case 5:
-      break;
-    default:
+    if (opcion < 1 || opcion > 5)
       print_incorrect_option();
-    }
   } while (opcion < 1 || opcion > 5);
+
+  switch (opcion) {
+  case 1:
+    book();
+    break;
+  case 2:
+    print_reservations();
+    break;
+  case 3:
+    update_reservation();
+    break;
+  case 4:
+    delete_reservation();
+    break;
+  case 5:
+    break;
+  }
 }
+
+void TUIClient::book() {}
 
 void TUIClient::print_reservations() {
   // Casting
   Client *c = dynamic_cast<Client *>(get_user());
+
   if (c != nullptr) {
     vector<Reservation> reservations =
         get_ootel()->get_reservations_history().find_by(*c);
@@ -119,25 +145,201 @@ void TUIClient::print_reservations() {
   }
 }
 
+void TUIClient::update_reservation() {}
+
+void TUIClient::delete_reservation() {}
+
+// Bankcards
+void TUIClient::bank_cards() {
+  int opcion;
+  do {
+    clear_screen();
+    print_banner();
+
+    cout << "Bank Cards" << endl << endl;
+    cout << "[1] - Add a bank card" << endl;
+    cout << "[2] - Select a bank card" << endl;
+    cout << "[3] - Update a bank card" << endl;
+    cout << "[4] - Delete a bank card" << endl;
+    cout << "[5] - See bank cards" << endl;
+    cout << "[6] - Go Back" << endl;
+    cout << endl;
+    cout << "> ";
+    cin >> opcion;
+
+    if (opcion < 1 || opcion > 6)
+      print_incorrect_option();
+  } while (opcion < 1 || opcion > 6);
+
+  switch (opcion) {
+  case 1:
+    add_bank_card();
+    // Mostrar el menu de bank cards
+    bank_cards();
+    break;
+  case 2:
+    select_bank_card();
+    // Mostrar el menu de bank cards
+    bank_cards();
+    break;
+  case3:
+    update_bank_card();
+    // Mostrar el menu de bank cards
+    bank_cards();
+    break;
+  case 4:
+    delete_bank_card();
+    // Mostrar el menu de bank cards
+    bank_cards();
+    break;
+  case 5:
+    print_bank_cards();
+    break;
+  case 6:
+    break;
+  }
+}
+
+void TUIClient::add_bank_card() {
+  int opcion;
+  do {
+    clear_screen();
+    print_banner();
+
+    cout << "Bank Cards" << endl << endl;
+    cout << "[1] - Visa" << endl;
+    cout << "[2] - Mastercard" << endl;
+    cout << "[3] - Cancel" << endl;
+    cout << endl;
+    cout << "> ";
+    cin >> opcion;
+
+    if (opcion < 1 || opcion > 3)
+      print_incorrect_option();
+  } while (opcion < 1 || opcion > 3);
+
+  if (opcion == 3)
+    return;
+
+  string number;
+  string cardholder;
+  int expiration_year;
+  int cvc;
+
+  cin.ignore(); // Limpiar el buffer
+
+  clear_screen();
+  print_banner();
+  cout << "Bank Cards" << endl << endl;
+  cout << "Number: ";
+  getline(cin, number);
+  cout << "Card Holder: ";
+  getline(cin, cardholder);
+  cout << "Expiration Year: ";
+  cin >> expiration_year;
+  cout << "CVC: ";
+  cin >> cvc;
+
+  BankCard *card;
+  try {
+    switch (opcion) {
+    case 1:
+      card = new Visa(number, cardholder, expiration_year, cvc);
+      break;
+    case 2:
+      card = new Mastercard(number, cardholder, expiration_year, cvc);
+      break;
+    }
+
+    Client *c = dynamic_cast<Client *>(get_user());
+    if (c != nullptr) {
+      c->add_card(card);
+      cout << endl << "Card added successfully..." << endl;
+    }
+  } catch (const exception &e) {
+    cout << endl << e.what() << endl;
+  }
+  sleep_for(MESSAGE_WAIT_TIME_SECONDS);
+}
+
+void TUIClient::select_bank_card() {}
+
+void TUIClient::update_bank_card() {}
+
+void TUIClient::delete_bank_card() {}
+
+void TUIClient::print_bank_cards() {}
+
+// Profile
+void TUIClient::profile() {
+  Client *c = dynamic_cast<Client *>(get_user());
+
+  if (c != nullptr) {
+    int opcion;
+    do {
+      clear_screen();
+      print_banner();
+
+      cout << "Profile" << endl << endl;
+      cout << get_user()->to_string() << endl;
+
+      cout << endl;
+      cout << "[1] - Update Profile" << endl;
+      cout << "[2] - Go Back" << endl;
+      cout << endl;
+      cout << "> ";
+      cin >> opcion;
+
+      if (opcion < 1 || opcion > 2)
+        print_incorrect_option();
+
+    } while (opcion < 1 || opcion > 2);
+
+    switch (opcion) {
+    case 1:
+      update_profile();
+      // Mostrar otra vez el perfil
+      profile();
+      break;
+    case 2:
+      break;
+    }
+  }
+}
+
+void TUIClient::update_profile() {
+  clear_screen();
+  print_banner();
+
+  cout << "Profile" << endl << endl;
+  auto optional_user = user_form();
+  if (optional_user) {
+    string curr_password;
+    cout << endl;
+    cout << "Current password: ";
+    cin.ignore(); // Limpiar el buffer
+    getline(cin, curr_password);
+
+    User u = optional_user.value();
+
+    try {
+      // Primero actualizar el password
+      get_user()->update_password(curr_password, u.get_password());
+      // Actualizar perfil
+      get_user()->update_profile(u.get_name(), u.get_last_name(), u.get_email(),
+                                 u.get_phone_number(), u.get_birthdate());
+      cout << endl << "Profile updated successfully..." << endl;
+    } catch (const exception &e) {
+      cout << endl << e.what() << endl;
+    }
+  }
+  sleep_for(MESSAGE_WAIT_TIME_SECONDS);
+}
+
+// Signout
 void TUIClient::sign_out() {
   get_user()->sign_out();
   cout << endl << "Signing out..." << endl;
   get_manager()->go_back();
-  sleep_for(1);
-  
-}
-
-void TUIClient::profile() {
-  clear_screen();
-  print_banner();
-
-  cout << endl << "Profile" << endl << endl;
-  cout << get_user()->to_string() << endl;
-
-  cout << endl;
-  press_enter_continue();
-}
-
-void TUIClient::bank_cards() {
-
+  sleep_for(MESSAGE_WAIT_TIME_SECONDS);
 }

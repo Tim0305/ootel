@@ -9,7 +9,7 @@ private:
   void create_account();
 public:
   TUILogin(Ootel *ootel, TUIManager *manager) : TUI(ootel, manager) {}
-  void print() override;
+  void run() override;
 };
 
 #endif // !TUI_LOGIN_H

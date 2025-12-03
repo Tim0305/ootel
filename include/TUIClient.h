@@ -11,8 +11,17 @@ private:
   void print_reservations();
   void sign_out();
   void profile();
+  void update_profile();
+  void add_bank_card();
+  void select_bank_card();
+  void update_bank_card();
+  void delete_bank_card();
+  void print_bank_cards();
+  void book();
+  void update_reservation();
+  void delete_reservation();
 public:
-  TUIClient(Ootel* ootel, User* user, TUIManager* manager): TUI(ootel, user, manager){}
-  void print() override;
+  TUIClient(Ootel* ootel, User* user, TUIManager* manager);
+  void run() override;
 };
 #endif // !TUI_CLIENT_H

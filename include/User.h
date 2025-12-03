@@ -19,14 +19,10 @@ private:
 public:
   User();
   User(const User &user);
-  User(int id, std::string name, std::string last_name, std::string email, long phone_number,
-       std::string password, Datetime birthdate, int type)
-      : id(id), name(name), last_name(last_name), email(email), phone_number(phone_number),
-        password(password), birthdate(birthdate), type(type), is_logged(false) {
-  }
-  User(std::string name, std::string last_name, std::string email, long phone_number,
-       std::string password, Datetime birthdate, int type)
-      : User(-1, name, last_name, email, phone_number, password, birthdate, type) {}
+  User(int id, std::string name, std::string last_name, std::string email,
+       long phone_number, std::string password, Datetime birthdate, int type);
+  User(std::string name, std::string last_name, std::string email,
+       long phone_number, std::string password, Datetime birthdate, int type);
   virtual ~User() = default;
 
   // Constants
@@ -52,7 +48,7 @@ public:
   void set_birthdate(Datetime birthdate);
   void set_type(int type);
   void update_password(std::string current_password, std::string new_password);
-  void update_profile(std::string name, std::string email, long phone_number,
+  void update_profile(std::string name, std::string last_name, std::string email, long phone_number,
                       Datetime birthdate);
 
   bool log_in(std::string email, std::string password);

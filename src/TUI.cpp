@@ -13,6 +13,9 @@ TUI::TUI(Ootel *ootel, User *user, TUIManager *manager) {
   if (manager == nullptr)
     throw invalid_argument("Manager must exist");
 
+  if (ootel == nullptr)
+    throw invalid_argument("Ootel must exist");
+
   this->ootel = ootel;
   this->user = user;
   this->manager = manager;
@@ -67,7 +70,6 @@ optional<User> TUI::user_form() {
   int month;
   int day;
 
-  cout << "Client signup" << endl << endl;
   cout << "Name: ";
   getline(cin, name); // Limpiar el buffer
   getline(cin, name);
@@ -103,12 +105,13 @@ optional<User> TUI::user_form() {
 void TUI::print_incorrect_option() {
   cout << endl;
   cout << "Incorrect option... Try again" << endl;
-  sleep_for(1);
+  sleep_for(MESSAGE_WAIT_TIME_SECONDS);
   clear_screen();
 }
 
 void TUI::press_enter_continue() {
-  cout << "Press ENTER to exit...";
+  cout << endl;
+  cout << "Press ENTER to return...";
   cin.ignore(); // Limpiar el buffer
   cin.get();
 }

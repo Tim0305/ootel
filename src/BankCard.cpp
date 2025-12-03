@@ -30,7 +30,7 @@ string BankCard::get_cardholder() const { return cardholder; }
 void BankCard::set_number(string number) {
   if (BankCard::is_number_digits(number))
     if (is_valid(number))
-      BankCard::set_number(number);
+      this->number = number;
     else
       throw invalid_argument("Invalid card number");
   else

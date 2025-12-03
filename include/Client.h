@@ -15,6 +15,7 @@ private:
 public:
   Client(int id, std::string name, std::string last_name, std::string email, long phone_number,
          std::string password, Datetime birthdate);
+  Client(const User& user);
   ~Client(); // Liberar la memoria de los punteros
 
   std::vector<BankCard *> get_bank_cards();

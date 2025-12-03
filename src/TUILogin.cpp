@@ -1,4 +1,5 @@
 #include "TUILogin.h"
+#include "Client.h"
 #include "Ootel.h"
 #include "TUIClient.h"
 #include "User.h"
@@ -6,7 +7,7 @@
 
 using namespace std;
 
-void TUILogin::print() {
+void TUILogin::run() {
   int opcion;
   do {
     clear_screen();
@@ -37,6 +38,7 @@ void TUILogin::log_in() {
   clear_screen();
   print_banner();
 
+  cout << "Login" << endl << endl;
   string email;
   string password;
   cout << "Email: ";
@@ -63,21 +65,22 @@ void TUILogin::log_in() {
       cout << endl << "Invalid user... Try again" << endl;
     }
   }
-  sleep_for(1);
+  sleep_for(MESSAGE_WAIT_TIME_SECONDS);
 }
 
 void TUILogin::create_account() {
   clear_screen();
   print_banner();
 
+  cout << "Client signup" << endl << endl;
   auto user_optional = user_form();
   if (user_optional) {
     cout << endl;
     cout << "Client created sucesfully... Login" << endl;
 
     // Almacenar el objeto en el heap
-    get_ootel()->create_user(new User(user_optional.value()));
+    get_ootel()->create_user(new Client(user_optional.value()));
     clear_screen();
   }
-  sleep_for(1);
+  sleep_for(MESSAGE_WAIT_TIME_SECONDS);
 }

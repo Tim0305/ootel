@@ -114,6 +114,8 @@ void Ootel::delete_room(int number) {
 void Ootel::create_user(User* user) {
     if (user == nullptr)
         throw runtime_error("User cannot be nullptr");
+    // Update id
+    user->set_id(users.size() + 1);
     users.push_back(user);
 }
 
