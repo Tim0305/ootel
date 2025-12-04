@@ -1,21 +1,20 @@
 #ifndef ROOM_H
 #define ROOM_H
 
-#include "Client.h"
+#include <string>
 
 class Room {
 private:
   int number;
   int type;
   bool available;
-  Client *client;
   int number_people;
   int number_beds;
 
 public:
   Room(int number, int type, int number_people, int number_beds)
       : number(number), type(type), number_people(number_people),
-        number_beds(number_beds), available(true), client(nullptr) {}
+        number_beds(number_beds), available(true) {}
   virtual ~Room() = default;
 
   // Constants
@@ -27,7 +26,6 @@ public:
   int get_number();
   int get_type();
   bool is_available();
-  Client *get_client();
   int get_number_people();
   int get_number_beds();
 
@@ -35,11 +33,9 @@ public:
   void set_number(int number);
   void set_type(int type);
   void set_available(bool available);
-  void set_client(Client *client);
   void set_number_people(int number_people);
   void set_number_beds(int number_beds);
 
-  void book(Client *client);
   void release();
 
   virtual std::string to_string();

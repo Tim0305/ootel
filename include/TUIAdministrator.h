@@ -11,6 +11,11 @@ private:
   void see_administrators();
   void print_administrators();
   void rooms();
+  void create_room();
+  void update_room();
+  void delete_room();
+  void see_rooms();
+  void print_rooms();
   void reservations();
 public:
   TUIAdministrator(Ootel* ootel, User* user, TUIManager* manager);

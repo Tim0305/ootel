@@ -73,7 +73,13 @@ void Ootel::set_state(string state) { this->state = state; }
 void Ootel::set_cp(int cp) { this->cp = cp; }
 
 // Control de cuartos
-void Ootel::create_room(Room *room) { rooms.push_back(room); }
+void Ootel::create_room(Room *room) {
+  for (auto r : rooms)
+    if (r->get_number() == room->get_number())
+      throw invalid_argument("Room with id " + to_string(room->get_number()) +
+                             " already exists...");
+  rooms.push_back(room);
+}
 
 void Ootel::update_room(int number, Room *room) {
   if (room == nullptr)
@@ -142,8 +148,8 @@ void Ootel::delete_user(int id) {
 }
 
 // Finders
-User* Ootel::find_user(int id) {
-  for (User* u: users) {
+User *Ootel::find_user(int id) {
+  for (User *u : users) {
     if (u->get_id() == id)
       return u;
   }

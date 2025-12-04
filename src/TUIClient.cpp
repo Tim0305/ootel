@@ -71,7 +71,7 @@ void TUIClient::reservations() {
     cout << "[2] - See reservations" << endl;
     cout << "[3] - Update reservation" << endl;
     cout << "[4] - Delete reservation" << endl;
-    cout << "[5] - Go Back" << endl;
+    cout << "[5] - Go back" << endl;
     cout << endl << endl;
     cout << "> ";
     cin >> opcion;
@@ -133,7 +133,7 @@ void TUIClient::book() {
     cout << "[1] - Standard" << endl;
     cout << "[2] - Double" << endl;
     cout << "[3] - Suite" << endl;
-    cout << "[4] - Go Back" << endl;
+    cout << "[4] - Go back" << endl;
     cout << endl;
     cout << "> ";
     cin >> opcion;
@@ -354,7 +354,7 @@ void TUIClient::bank_cards() {
     cout << "[3] - Update a bank card" << endl;
     cout << "[4] - Delete a bank card" << endl;
     cout << "[5] - See bank cards" << endl;
-    cout << "[6] - Go Back" << endl;
+    cout << "[6] - Go back" << endl;
     cout << endl;
     cout << "> ";
     cin >> opcion;
@@ -642,7 +642,7 @@ void TUIClient::profile() {
 
       cout << endl;
       cout << "[1] - Update Profile" << endl;
-      cout << "[2] - Go Back" << endl;
+      cout << "[2] - Go back" << endl;
       cout << endl;
       cout << "> ";
       cin >> opcion;

@@ -1,5 +1,10 @@
 #include "TUIAdministrator.h"
 #include "Administrator.h"
+#include "DoubleRoom.h"
+#include "StandardRoom.h"
+#include "SuiteRoom.h"
+#include "TUIClient.h"
+#include <exception>
 #include <iostream>
 #include <stdexcept>
 
@@ -53,11 +58,11 @@ void TUIAdministrator::users() {
     print_banner();
 
     cout << "Users" << endl << endl;
-    cout << "[1] - Create Administrator" << endl;
-    cout << "[2] - Update Administrator" << endl;
-    cout << "[3] - Delete Administrator" << endl;
-    cout << "[4] - See Administrators" << endl;
-    cout << "[5] - Go Back" << endl;
+    cout << "[1] - Create an administrator" << endl;
+    cout << "[2] - Update an administrator" << endl;
+    cout << "[3] - Delete an administrator" << endl;
+    cout << "[4] - See administrators" << endl;
+    cout << "[5] - Go back" << endl;
     cout << endl;
     cout << "> ";
     cin >> opcion;
@@ -222,6 +227,103 @@ void TUIAdministrator::print_administrators() {
   }
 }
 
-void TUIAdministrator::rooms() {}
+void TUIAdministrator::rooms() {
+  int opcion;
+  do {
+    clear_screen();
+    print_banner();
+
+    cout << "Rooms" << endl << endl;
+    cout << "[1] - Create a room" << endl;
+    cout << "[2] - Update a room" << endl;
+    cout << "[3] - Delete a room" << endl;
+    cout << "[4] - See rooms" << endl;
+    cout << "[5] - Go back" << endl;
+    cout << endl;
+    cout << "> ";
+    cin >> opcion;
+
+    if (opcion < 1 || opcion > 5)
+      print_incorrect_option();
+  } while (opcion < 1 || opcion > 5);
+
+  switch (opcion) {
+  case 1:
+    create_room();
+    // Regresar al menu de rooms
+    rooms();
+    break;
+  case 2:
+    update_room();
+    // Regresar al menu de rooms
+    rooms();
+    break;
+  case 3:
+    delete_room();
+    // Regresar al menu de rooms
+    rooms();
+    break;
+  case 4:
+    see_rooms();
+    // Regresar al menu de rooms
+    rooms();
+    break;
+  case 5:
+    break;
+  }
+}
+
+void TUIAdministrator::create_room() {
+  int opcion;
+  do {
+    clear_screen();
+    print_banner();
+
+    cout << "Create room" << endl << endl;
+
+    cout << "[1] - Standard" << endl;
+    cout << "[2] - Double" << endl;
+    cout << "[3] - Suite" << endl;
+    cout << "[4] - Go back" << endl;
+    cout << endl;
+    cout << "> ";
+    cin >> opcion;
+
+    if (opcion < 1 || opcion > 4)
+      print_incorrect_option();
+  } while (opcion < 1 || opcion > 4);
+
+  int number;
+  cout << "Number: ";
+  cin >> number;
+
+  try {
+    switch (opcion) {
+    case 1:
+      get_ootel()->create_room(new StandardRoom(number));
+      break;
+    case 2:
+      get_ootel()->create_room(new DoubleRoom(number));
+      break;
+    case 3:
+      get_ootel()->create_room(new SuiteRoom(number));
+      break;
+    }
+
+    cout << endl << "Room created successfully..." << endl;
+  } catch (const exception &e) {
+    cout << endl << e.what() << endl;
+  }
+
+  sleep_for(MESSAGE_WAIT_TIME_SECONDS);
+}
+
+void TUIAdministrator::update_room() {}
+
+void TUIAdministrator::delete_room() {}
+
+void TUIAdministrator::see_rooms() {}
+
+void TUIAdministrator::print_rooms() {}
 
 void TUIAdministrator::reservations() {}
