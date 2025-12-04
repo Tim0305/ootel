@@ -18,7 +18,6 @@ private:
 
 public:
   User();
-  User(const User &user);
   User(int id, std::string name, std::string last_name, std::string email,
        long phone_number, std::string password, Datetime birthdate, int type);
   User(std::string name, std::string last_name, std::string email,

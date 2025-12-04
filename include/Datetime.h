@@ -25,10 +25,18 @@ public:
     void set_year(int year);
     void set_month(int month);
     void set_day(int day);
-
-    // Setter completo
     bool set_date(int year, int month, int day);
+
     std::string to_string();
+
+    bool operator==(const Datetime& other) const;
+    bool operator!=(const Datetime& other) const;
+    bool operator<(const Datetime& other) const;
+    bool operator>(const Datetime& other) const;
+    bool operator<=(const Datetime& other) const;
+    bool operator>=(const Datetime& other) const;
+
+    static Datetime now();
 };
 
 #endif

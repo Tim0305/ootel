@@ -1,8 +1,13 @@
 #include "TUIClient.h"
 #include "BankCard.h"
 #include "Client.h"
+#include "Datetime.h"
+#include "DoubleRoom.h"
 #include "Mastercard.h"
 #include "Reservation.h"
+#include "ReservationsHistory.h"
+#include "StandardRoom.h"
+#include "SuiteRoom.h"
 #include "Visa.h"
 
 #include <cstdio>
@@ -82,7 +87,7 @@ void TUIClient::reservations() {
     reservations();
     break;
   case 2:
-    print_reservations();
+    see_reservations();
     // Mostrar el menu de reservaciones
     reservations();
     break;
@@ -101,9 +106,211 @@ void TUIClient::reservations() {
   }
 }
 
-void TUIClient::book() {}
+void TUIClient::book() {
+  int opcion;
+  do {
+    clear_screen();
+    print_banner();
+    cout << "Reservations" << endl << endl;
+    cout << "=======================================" << endl;
+    cout << "              Standard Room";
+    cout << "Price: $" << StandardRoom::get_price() << endl;
+    cout << "Discount: " << StandardRoom::get_discount() << "%" << endl;
+    cout << "Final price: $" << StandardRoom::get_final_price() << endl;
+    cout << "=======================================" << endl << endl;
+    cout << "=======================================" << endl;
+    cout << "              Double Room";
+    cout << "Price: $" << DoubleRoom::get_price() << endl;
+    cout << "Discount: " << DoubleRoom::get_discount() << "%" << endl;
+    cout << "Final price: $" << DoubleRoom::get_final_price() << endl;
+    cout << "=======================================" << endl << endl;
+    cout << "=======================================" << endl;
+    cout << "              Suite Room";
+    cout << "Price: $" << SuiteRoom::get_price() << endl;
+    cout << "Discount: " << SuiteRoom::get_discount() << "%" << endl;
+    cout << "Final price: $" << SuiteRoom::get_final_price() << endl;
+    cout << "=======================================" << endl << endl;
+    cout << "[1] - Standard" << endl;
+    cout << "[2] - Double" << endl;
+    cout << "[3] - Suite" << endl;
+    cout << "[4] - Go Back" << endl;
+    cout << endl;
+    cout << "> ";
+    cin >> opcion;
 
-void TUIClient::print_reservations() {
+    if (opcion < 1 || opcion > 4)
+      print_incorrect_option();
+  } while (opcion < 1 || opcion > 4);
+
+  if (opcion == 4)
+    return;
+
+  int room_type;
+  double final_price;
+  switch (opcion) {
+  case 1:
+    room_type = Room::STANDARD;
+    final_price = StandardRoom::get_final_price();
+    break;
+  case 2:
+    room_type = Room::DOUBLE;
+    final_price = DoubleRoom::get_final_price();
+    break;
+  case 3:
+    room_type = Room::SUITE;
+    final_price = SuiteRoom::get_final_price();
+    break;
+  }
+
+  int start_year;
+  int start_month;
+  int start_day;
+  int end_year;
+  int end_month;
+  int end_day;
+
+  clear_screen();
+  print_banner();
+  cout << "Reservations" << endl << endl;
+
+  cout << "=======================================" << endl;
+  cout << "              Start Date" << endl;
+  cout << "Year (xxxx): ";
+  cin >> start_year;
+  cout << "Month (1-12): ";
+  cin >> start_month;
+  cout << "Day (1-31): ";
+  cin >> start_day;
+  cout << endl;
+  cout << "=======================================" << endl;
+  cout << "               End Date" << endl;
+  cout << "Year (xxxx): ";
+  cin >> end_year;
+  cout << "Month (1-12): ";
+  cin >> end_month;
+  cout << "Day (1-31): ";
+  cin >> end_day;
+
+  try {
+    Datetime start(start_year, start_month, start_day);
+    Datetime end(end_year, end_month, end_day);
+    Room *r = get_ootel()->get_available_room(room_type, start, end);
+    if (r == nullptr) {
+      cout << endl << "No rooms were found... Try with other dates" << endl;
+    } else {
+      Client *c = dynamic_cast<Client *>(get_user());
+      if (c != nullptr) {
+        ReservationsHistory& rh = get_ootel()->get_reservations_history();
+        Fee fee(final_price, Datetime::now());
+        cout << endl << "Paying..." << endl;
+        sleep_for(MESSAGE_WAIT_TIME_SECONDS);
+        cout << endl << "Transaction completed successfully..." << endl;
+        Reservation reservation(start, end, false, fee, c, r);
+        rh.create_reservation(reservation);
+        cout << endl << "Reservation created successfully..." << endl;
+      }
+    }
+  } catch (const exception &e) {
+    cout << endl << e.what() << endl;
+  }
+
+  sleep_for(MESSAGE_WAIT_TIME_SECONDS);
+}
+
+void TUIClient::update_reservation() {
+  clear_screen();
+  print_banner();
+  cout << "Reservations" << endl << endl;
+
+  Client *c = dynamic_cast<Client *>(get_user());
+  ReservationsHistory& rh = get_ootel()->get_reservations_history();
+  vector<Reservation> reservations = rh.find_by(*c);
+
+  print_reservations(reservations);
+
+  int id;
+  cout << "(-1 to return)" << endl;
+  cout << "> ";
+  cin >> id;
+
+  if (id == -1)
+    return;
+
+  int start_year;
+  int start_month;
+  int start_day;
+  int end_year;
+  int end_month;
+  int end_day;
+
+  clear_screen();
+  print_banner();
+  cout << "Reservations" << endl << endl;
+
+  cout << "=======================================" << endl;
+  cout << "              Start Date" << endl;
+  cout << "Year (xxxx): ";
+  cin >> start_year;
+  cout << "Month (1-12): ";
+  cin >> start_month;
+  cout << "Day (1-31): ";
+  cin >> start_day;
+  cout << endl;
+  cout << "=======================================" << endl;
+  cout << "               End Date" << endl;
+  cout << "Year (xxxx): ";
+  cin >> end_year;
+  cout << "Month (1-12): ";
+  cin >> end_month;
+  cout << "Day (1-31): ";
+  cin >> end_day;
+
+  try {
+    Datetime start(start_year, start_month, start_day);
+    Datetime end(end_year, end_month, end_day);
+    
+    Reservation& r = rh.find_by(id);
+    r.set_start_date(start);
+    r.set_end_date(end);
+    
+    rh.update_reservation(id, r);
+    cout << endl << "Reservation updated successfully..." << endl;
+  } catch (const exception &e) {
+    cout << endl << e.what() << endl;
+  }
+
+  sleep_for(MESSAGE_WAIT_TIME_SECONDS);
+}
+
+void TUIClient::delete_reservation() {
+  clear_screen();
+  print_banner();
+  cout << "Reservations" << endl << endl;
+
+  Client *c = dynamic_cast<Client *>(get_user());
+  ReservationsHistory& rh = get_ootel()->get_reservations_history();
+  vector<Reservation> reservations = rh.find_by(*c);
+
+  print_reservations(reservations);
+
+  int id;
+  cout << "(-1 to return)" << endl;
+  cout << "> ";
+  cin >> id;
+
+  if (id == -1)
+    return;
+  try {
+    rh.delete_reservation(id);
+    cout << endl << "Reservation deleted successfully..." << endl;
+  } catch (const exception &e) {
+    cout << endl << e.what() << endl;
+  }
+
+  sleep_for(MESSAGE_WAIT_TIME_SECONDS);
+}
+
+void TUIClient::see_reservations() {
   // Casting
   Client *c = dynamic_cast<Client *>(get_user());
 
@@ -119,23 +326,20 @@ void TUIClient::print_reservations() {
     if (reservations.empty())
       cout << "No reservations were found..." << endl;
     else
-      for (int i = 0; i < reservations.size(); i++) {
-        cout << endl;
-        cout << "=========================================" << endl;
-        cout << "[" << i + 1 << "]" << endl;
-        cout << reservations[i].to_string();
-        cout << "=========================================" << endl;
-      }
-
+      print_reservations(reservations);
     press_enter_continue();
   }
 }
 
-void TUIClient::update_reservation() {
-
+void TUIClient::print_reservations(vector<Reservation> reservations) {
+  for (int i = 0; i < reservations.size(); i++) {
+    cout << endl;
+    cout << "=========================================" << endl;
+    cout << reservations[i].to_string();
+    cout << "=========================================" << endl;
+    cout << endl;
+  }
 }
-
-void TUIClient::delete_reservation() {}
 
 // Bankcards
 void TUIClient::bank_cards() {
@@ -271,18 +475,19 @@ void TUIClient::select_bank_card() {
       cout << "> ";
       cin >> index;
 
-      if (index != -1) {
-        try {
-          c->set_selected_card(index - 1);
+      if (index == -1)
+        return;
 
-          cout << endl
-               << "Bank Card " << index << " has been selected successfully..."
-               << endl;
-        } catch (const exception &e) {
-          cout << endl << e.what() << endl;
-        }
-        sleep_for(MESSAGE_WAIT_TIME_SECONDS);
+      try {
+        c->set_selected_card(index - 1);
+
+        cout << endl
+             << "Bank Card " << index << " has been selected successfully..."
+             << endl;
+      } catch (const exception &e) {
+        cout << endl << e.what() << endl;
       }
+      sleep_for(MESSAGE_WAIT_TIME_SECONDS);
     }
   }
 }
@@ -306,49 +511,50 @@ void TUIClient::update_bank_card() {
       cout << "> ";
       cin >> index;
 
-      if (index != -1) {
-        try {
-          clear_screen();
-          print_banner();
+      if (index == -1)
+        return;
 
-          cout << "Bank Cards" << endl << endl;
+      try {
+        clear_screen();
+        print_banner();
 
-          string number;
-          string cardholder;
-          int expiration_year;
-          int cvc;
+        cout << "Bank Cards" << endl << endl;
 
-          cin.ignore(); // Limpiar el buffer
+        string number;
+        string cardholder;
+        int expiration_year;
+        int cvc;
 
-          cout << "Number: ";
-          getline(cin, number);
-          cout << "Card Holder: ";
-          getline(cin, cardholder);
-          cout << "Expiration Year: ";
-          cin >> expiration_year;
-          cout << "CVC: ";
-          cin >> cvc;
+        cin.ignore(); // Limpiar el buffer
 
-          switch (c->get_bank_card(index - 1)->get_type()) {
-          case BankCard::VISA:
-            c->update_bank_card(
-                index - 1, new Visa(number, cardholder, expiration_year, cvc));
-            cout << endl << "Bank Card updated successfully..." << endl;
-            break;
-          case BankCard::MASTERCARD:
-            c->update_bank_card(
-                index - 1,
-                new Mastercard(number, cardholder, expiration_year, cvc));
-            cout << endl << "Bank Card " << index << " updated successfully..." << endl;
-            break;
-          default:
-            cout << endl << "Invalid type for BankCard" << endl;
-          }
-        } catch (const exception &e) {
-          cout << endl << e.what() << endl;
+        cout << "Number: ";
+        getline(cin, number);
+        cout << "Card Holder: ";
+        getline(cin, cardholder);
+        cout << "Expiration Year: ";
+        cin >> expiration_year;
+        cout << "CVC: ";
+        cin >> cvc;
+
+        switch (c->get_bank_card(index - 1)->get_type()) {
+        case BankCard::VISA:
+          c->update_bank_card(
+              index - 1, new Visa(number, cardholder, expiration_year, cvc));
+          cout << endl << "Bank Card updated successfully..." << endl;
+          break;
+        case BankCard::MASTERCARD:
+          c->update_bank_card(index - 1, new Mastercard(number, cardholder,
+                                                        expiration_year, cvc));
+          cout << endl
+               << "Bank Card " << index << " updated successfully..." << endl;
+          break;
+        default:
+          cout << endl << "Invalid type for BankCard" << endl;
         }
-        sleep_for(MESSAGE_WAIT_TIME_SECONDS);
+      } catch (const exception &e) {
+        cout << endl << e.what() << endl;
       }
+      sleep_for(MESSAGE_WAIT_TIME_SECONDS);
     }
   }
 }
@@ -372,18 +578,19 @@ void TUIClient::delete_bank_card() {
       cout << "> ";
       cin >> index;
 
-      if (index != -1) {
-        try {
-          c->remove_bank_card(index - 1);
+      if (index == -1)
+        return;
 
-          cout << endl
-               << "Bank Card " << index << " has been removed successfully..."
-               << endl;
-        } catch (const exception &e) {
-          cout << endl << e.what() << endl;
-        }
-        sleep_for(MESSAGE_WAIT_TIME_SECONDS);
+      try {
+        c->remove_bank_card(index - 1);
+
+        cout << endl
+             << "Bank Card " << index << " has been removed successfully..."
+             << endl;
+      } catch (const exception &e) {
+        cout << endl << e.what() << endl;
       }
+      sleep_for(MESSAGE_WAIT_TIME_SECONDS);
     }
   }
 }

@@ -1,6 +1,7 @@
 #ifndef OOTEL_H
 #define OOTEL_H
 
+#include "Datetime.h"
 #include "ReservationsHistory.h"
 #include "Room.h"
 #include "User.h"
@@ -15,7 +16,7 @@ private:
   std::vector<Room *> rooms;
   std::vector<User *> users;
   ReservationsHistory reservations_history;
-
+  long users_id;
 public:
   Ootel(std::string country, std::string state, int cp);
   ~Ootel();
@@ -26,22 +27,23 @@ public:
   int get_cp();
   std::vector<Room *> get_rooms();
   std::vector<User *> get_users();
-  ReservationsHistory& get_reservations_history();
+  Room *get_available_room(int room_type, Datetime start, Datetime end);
+  ReservationsHistory &get_reservations_history();
 
   // Setters
   void set_country(std::string country);
   void set_state(std::string state);
   void set_cp(int cp);
 
-  void create_room(Room* room);
-  void update_room(int number, Room* room);
+  void create_room(Room *room);
+  void update_room(int number, Room *room);
   void delete_room(int number);
-  void create_user(User* user);
-  void update_user(int id, User* user);
+  void create_user(User *user);
+  void update_user(int id, User *user);
   void delete_user(int id);
-  User* find_user(std::string name);
-  Room* find_room(int number);
-  User* log_in(std::string email, std::string password);
+  User *find_user(std::string name);
+  Room *find_room(int number);
+  User *log_in(std::string email, std::string password);
 };
 
 #endif // !OOTEL_H

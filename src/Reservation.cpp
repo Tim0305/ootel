@@ -3,19 +3,29 @@
 
 using namespace std;
 
-int Reservation::get_id() { return id; }
+Reservation::Reservation(const Reservation& reservation)
+    : id(reservation.id),
+      start_date(reservation.start_date),
+      end_date(reservation.end_date),
+      active(reservation.active),
+      fee(reservation.fee),
+      client(reservation.client),
+      room(reservation.room)
+{}
 
-Datetime Reservation::get_start_date() { return start_date; }
+int Reservation::get_id() const { return id; }
 
-Datetime Reservation::get_end_date() { return end_date; }
+Datetime Reservation::get_start_date() const { return start_date; }
 
-bool Reservation::is_active() { return active; }
+Datetime Reservation::get_end_date() const { return end_date; }
 
-Fee Reservation::get_fee() { return fee; }
+bool Reservation::is_active() const { return active; }
 
-Client *Reservation::get_client() { return client; }
+Fee Reservation::get_fee() const { return fee; }
 
-Room *Reservation::get_room() { return room; }
+Client *Reservation::get_client() const { return client; }
+
+Room *Reservation::get_room() const { return room; }
 
 // Setters
 void Reservation::set_id(int id) { this->id = id; }

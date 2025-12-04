@@ -1,6 +1,9 @@
 #include "Datetime.h"
+#include <chrono>
 #include <stdexcept>
 #include <string>
+
+using namespace std;
 
 Datetime::Datetime() : year(2000), month(1), day(1) {}
 
@@ -82,7 +85,43 @@ bool Datetime::set_date(int year, int month, int day) {
   return true;
 }
 
-std::string Datetime::to_string() {
+string Datetime::to_string() {
   return std::to_string(year) + " - " + std::to_string(month) + " - " +
          std::to_string(day);
+}
+
+bool Datetime::operator==(const Datetime &other) const {
+  return this->year == other.year && this->month == other.month &&
+         this->day == other.day;
+}
+
+bool Datetime::operator!=(const Datetime &other) const {
+  return !(*this == other);
+}
+
+bool Datetime::operator<(const Datetime &other) const {
+  if (this->year != other.year)
+    return this->year < other.year;
+  if (this->month != other.month)
+    return this->month < other.month;
+  return this->day < other.day;
+}
+
+bool Datetime::operator>(const Datetime &other) const { return other < *this; }
+
+bool Datetime::operator<=(const Datetime &other) const {
+  return !(*this > other);
+}
+
+bool Datetime::operator>=(const Datetime &other) const {
+  return !(*this < other);
+}
+
+Datetime Datetime::now() {
+  using namespace chrono;
+  auto now = system_clock::now();
+  std::time_t t = system_clock::to_time_t(now);
+  std::tm *lt = std::localtime(&t);
+
+  return Datetime(lt->tm_year + 1900, lt->tm_mon + 1, lt->tm_mday);
 }

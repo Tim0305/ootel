@@ -8,7 +8,6 @@ using namespace std;
 
 int Room::get_number() { return number; }
 int Room::get_type() { return type; }
-double Room::get_price() { return price; }
 bool Room::is_available() { return available; }
 int Room::get_number_people() { return number_people; }
 int Room::get_number_beds() { return number_beds; }
@@ -17,7 +16,6 @@ int Room::get_number_beds() { return number_beds; }
 
 void Room::set_number(int number) { this->number = number; }
 void Room::set_type(int type) { this->type = type; }
-void Room::set_price(double price) { this->price = price; }
 void Room::set_available(bool available) { this->available = available; }
 void Room::set_client(Client *client) { this->client = client; }
 void Room::set_number_people(int number_people) {
@@ -53,9 +51,8 @@ string Room::to_string() {
   }
 
   stringstream ss;
-  ss << "Number: " << number << endl;
   ss << "Type: " << type_room << endl;
-  ss << "Price: $" << price << endl;
+  ss << "Number: " << number << endl;
   ss << "People: " << number_people << endl;
   ss << "Beds: " << number_beds << endl;
 

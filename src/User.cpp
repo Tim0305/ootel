@@ -5,18 +5,6 @@
 
 using namespace std;
 
-// Constructor de copia
-User::User(const User &user) {
-  id = user.get_id();
-  phone_number = user.get_phone_number();
-  name = user.get_name();
-  last_name = user.get_last_name();
-  email = user.get_email();
-  password = user.get_password();
-  birthdate = user.get_birthdate();
-  type = user.get_type();
-}
-
 User::User(int id, std::string name, std::string last_name, std::string email,
            long phone_number, std::string password, Datetime birthdate,
            int type)

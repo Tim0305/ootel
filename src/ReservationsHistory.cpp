@@ -1,4 +1,5 @@
 #include "ReservationsHistory.h"
+#include "Datetime.h"
 #include "Room.h"
 #include <stdexcept>
 #include <string>
@@ -10,6 +11,7 @@ vector<Reservation> ReservationsHistory::get_reservations() {
 }
 
 void ReservationsHistory::create_reservation(Reservation reservation) {
+  reservation.set_id(reservations_id++);
   reservations.push_back(reservation);
 }
 
@@ -21,7 +23,7 @@ void ReservationsHistory::delete_reservation(int id) {
     }
   }
 
-  throw runtime_error("Reservation with id " + to_string(id) + " not found");
+  throw invalid_argument("Reservation with id " + to_string(id) + " was not found...");
 }
 
 void ReservationsHistory::update_reservation(int id, Reservation reservation) {
@@ -32,7 +34,7 @@ void ReservationsHistory::update_reservation(int id, Reservation reservation) {
     }
   }
 
-  throw runtime_error("Reservation with id " + to_string(id) + " not found");
+  throw invalid_argument("Reservation with id " + to_string(id) + " was not found...");
 }
 
 void ReservationsHistory::release_reservation(Client& client, Room& room) {
@@ -40,9 +42,9 @@ void ReservationsHistory::release_reservation(Client& client, Room& room) {
   vector<Reservation> reservations = find_by(client, room);
 
   if (reservations.size() == 0)
-    throw runtime_error("No reservations where found for client " +
+    throw invalid_argument("No reservations where found for client " +
                         to_string(client.get_id()) + " and room " +
-                        to_string(room.get_number()));
+                        to_string(room.get_number()) + "...");
 
   // Liberar la habitacion y la reservacion
   room.release();
@@ -62,14 +64,13 @@ vector<Reservation> ReservationsHistory::find_by(Client &client, Room &room) {
   return reservations;
 }
 
-vector<Reservation> ReservationsHistory::find_by(const int id) {
-  vector<Reservation> reservations;
-  for (auto r : reservations) {
-    if (r.get_id() == id) {
-      reservations.push_back(r);
+Reservation& ReservationsHistory::find_by(const int id) {
+  for (int i = 0; i < reservations.size(); i++) {
+    if (reservations[i].get_id() == id) {
+      return reservations[i];
     }
   }
-  return reservations;
+  throw invalid_argument("Reservation with id " + to_string(id) + " was not found...");
 }
 
 vector<Reservation> ReservationsHistory::find_by(Client &client) {
@@ -90,4 +91,13 @@ vector<Reservation> ReservationsHistory::find_by(Room &room) {
     }
   }
   return reservations;
+}
+
+bool ReservationsHistory::is_reserved(Room* room, Datetime start, Datetime end) {
+  vector<Reservation> reservations = find_by(*room);
+  for(auto res: reservations) {
+    if (res.get_start_date() < end && res.get_end_date() > start)
+      return true;
+  }
+  return false;
 }

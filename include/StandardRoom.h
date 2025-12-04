@@ -8,16 +8,21 @@ private:
   static const int PEOPLE = 2;
   static const int BEDS = 1;
   static int DISCOUNT;
+  static double PRICE;
 
 public:
-  StandardRoom(int number, double price)
-      : Room(number, Room::STANDARD, price, PEOPLE, BEDS) {}
+  StandardRoom(int number) : Room(number, Room::STANDARD, PEOPLE, BEDS) {}
 
   // Getters
-  int get_discount();
+  static int get_discount();
+  static double get_price();
+  static double get_final_price();
 
   // Setters
-  void set_discount(int discount) override;
+  static void set_discount(int discount);
+  static void set_price(double price);
+
+  std::string to_string() override;
 };
 
 #endif // !STANDARD_ROOM_H

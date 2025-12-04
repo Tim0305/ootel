@@ -3,12 +3,14 @@
   
 #include "TUI.h"
 #include "TUIManager.h"
+#include <vector>
 
 class TUIClient : public TUI{
 private:
   void reservations();
   void bank_cards();
-  void print_reservations();
+  void see_reservations();
+  void print_reservations(std::vector<Reservation> reservations);
   void sign_out();
   void profile();
   void update_profile();
