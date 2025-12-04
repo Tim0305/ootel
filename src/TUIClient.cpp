@@ -34,7 +34,7 @@ void TUIClient::run() {
     cout << "[1] - Reservations" << endl;
     cout << "[2] - Bank Cards" << endl;
     cout << "[3] - Profile" << endl;
-    cout << "[4] - Signout" << endl;
+    cout << "[4] - Sign out" << endl;
     cout << endl << endl;
     cout << "> ";
     cin >> opcion;
@@ -230,7 +230,7 @@ void TUIClient::update_reservation() {
 
   int id;
   cout << "(-1 to return)" << endl;
-  cout << "> ";
+  cout << "ID > ";
   cin >> id;
 
   if (id == -1)
@@ -295,7 +295,7 @@ void TUIClient::delete_reservation() {
 
   int id;
   cout << "(-1 to return)" << endl;
-  cout << "> ";
+  cout << "ID > ";
   cin >> id;
 
   if (id == -1)
@@ -472,7 +472,7 @@ void TUIClient::select_bank_card() {
 
       int index;
       cout << "(-1 to return)" << endl;
-      cout << "> ";
+      cout << "Index > ";
       cin >> index;
 
       if (index == -1)
@@ -508,7 +508,7 @@ void TUIClient::update_bank_card() {
 
       int index;
       cout << "(-1 to return)" << endl;
-      cout << "> ";
+      cout << "Index > ";
       cin >> index;
 
       if (index == -1)
@@ -575,7 +575,7 @@ void TUIClient::delete_bank_card() {
 
       int index;
       cout << "(-1 to return)" << endl;
-      cout << "> ";
+      cout << "Index > ";
       cin >> index;
 
       if (index == -1)
@@ -693,10 +693,3 @@ void TUIClient::update_profile() {
   sleep_for(MESSAGE_WAIT_TIME_SECONDS);
 }
 
-// Signout
-void TUIClient::sign_out() {
-  get_user()->sign_out();
-  cout << endl << "Signing out..." << endl;
-  get_manager()->go_back();
-  sleep_for(MESSAGE_WAIT_TIME_SECONDS);
-}

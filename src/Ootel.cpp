@@ -3,6 +3,8 @@
 #include <stdexcept>
 #include <string>
 
+#include <iostream>
+
 using namespace std;
 
 Ootel::Ootel(std::string country, std::string state, int cp) {
@@ -11,10 +13,11 @@ Ootel::Ootel(std::string country, std::string state, int cp) {
   set_cp(cp);
 
   reservations_history = ReservationsHistory();
+  // Contador de IDs
   users_id = 1;
 
   // Crear el administrador base
-  int id = users.size() + 1;
+  int id = 0;
   string name = "admin";
   string last_name = "";
   string email = "admin@ootel.com";
@@ -124,10 +127,13 @@ void Ootel::update_user(int id, User *user) {
 }
 
 void Ootel::delete_user(int id) {
+  if (id == 0)
+    throw invalid_argument("Admin must exist...");
+
   for (int i = 0; i < users.size(); i++) {
     if (users[i]->get_id() == id) {
       delete users[i];
-      rooms.erase(rooms.begin() + i);
+      users.erase(users.begin() + i);
       return;
     }
   }
@@ -136,6 +142,14 @@ void Ootel::delete_user(int id) {
 }
 
 // Finders
+User* Ootel::find_user(int id) {
+  for (User* u: users) {
+    if (u->get_id() == id)
+      return u;
+  }
+  return nullptr;
+}
+
 User *Ootel::find_user(string name) {
   for (User *u : users) {
     if (u->get_name() == name)

@@ -27,6 +27,7 @@ public:
   static void print_incorrect_option();
   static void press_enter_continue();
   virtual void run() = 0;
+  void sign_out();
   std::optional<User> user_form();
   Ootel *get_ootel();
   User *get_user();

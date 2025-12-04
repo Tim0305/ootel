@@ -1,6 +1,7 @@
 #include "TUILogin.h"
 #include "Client.h"
 #include "Ootel.h"
+#include "TUIAdministrator.h"
 #include "TUIClient.h"
 #include "User.h"
 #include <iostream>
@@ -57,6 +58,7 @@ void TUILogin::log_in() {
 
     switch (user->get_type()) {
     case User::ADMINISTRATOR:
+        get_manager()->go_to(new TUIAdministrator(get_ootel(), user, get_manager()));
       break;
     case User::CLIENT:
       get_manager()->go_to(new TUIClient(get_ootel(), user, get_manager()));

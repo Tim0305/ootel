@@ -16,7 +16,7 @@ private:
   std::vector<Room *> rooms;
   std::vector<User *> users;
   ReservationsHistory reservations_history;
-  long users_id;
+  int users_id;
 public:
   Ootel(std::string country, std::string state, int cp);
   ~Ootel();
@@ -41,6 +41,7 @@ public:
   void create_user(User *user);
   void update_user(int id, User *user);
   void delete_user(int id);
+  User* find_user(int id);
   User *find_user(std::string name);
   Room *find_room(int number);
   User *log_in(std::string email, std::string password);

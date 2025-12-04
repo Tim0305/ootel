@@ -115,3 +115,13 @@ void TUI::press_enter_continue() {
   cin.ignore(); // Limpiar el buffer
   cin.get();
 }
+
+void TUI::sign_out() {
+  if (get_user() == nullptr) {
+    throw runtime_error("No user was found...");
+  }
+  get_user()->sign_out();
+  cout << endl << "Signing out..." << endl;
+  get_manager()->go_back();
+  sleep_for(MESSAGE_WAIT_TIME_SECONDS);
+}

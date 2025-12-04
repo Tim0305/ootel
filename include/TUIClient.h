@@ -11,7 +11,6 @@ private:
   void bank_cards();
   void see_reservations();
   void print_reservations(std::vector<Reservation> reservations);
-  void sign_out();
   void profile();
   void update_profile();
   void add_bank_card();

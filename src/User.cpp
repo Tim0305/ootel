@@ -59,7 +59,7 @@ void User::update_password(string current_password, string new_password) {
   if (current_password == get_password())
     this->password = new_password;
   else
-    throw runtime_error("Invalid password. Current password is not correct");
+    throw invalid_argument("Invalid password. Current password is not correct");
 }
 
 void User::update_profile(string name, string last_name, string email,
