@@ -26,6 +26,7 @@ public:
   BankCard* get_bank_card(int index);
   BankCard *get_selected_card();
   void pay();
+  void refund();
   std::string to_string() override;
 };
 

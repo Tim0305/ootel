@@ -23,11 +23,11 @@ public:
   static const int SUITE = 2;
 
   // Getters
-  int get_number();
-  int get_type();
-  bool is_available();
-  int get_number_people();
-  int get_number_beds();
+  int get_number() const;
+  int get_type() const;
+  bool is_available() const;
+  int get_number_people() const;
+  int get_number_beds() const;
 
   // Setters
   void set_number(int number);
@@ -35,6 +35,7 @@ public:
   void set_available(bool available);
   void set_number_people(int number_people);
   void set_number_beds(int number_beds);
+  virtual void update(const Room& room);
 
   void release();
 

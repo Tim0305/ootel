@@ -36,10 +36,9 @@ public:
   void set_cp(int cp);
 
   void create_room(Room *room);
-  void update_room(int number, Room *room);
+  void update_room(int number, Room &room);
   void delete_room(int number);
   void create_user(User *user);
-  void update_user(int id, User *user);
   void delete_user(int id);
   User* find_user(int id);
   User *find_user(std::string name);

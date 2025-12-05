@@ -113,19 +113,19 @@ void TUIClient::book() {
     print_banner();
     cout << "Reservations" << endl << endl;
     cout << "=======================================" << endl;
-    cout << "              Standard Room";
+    cout << "              Standard Room" << endl;
     cout << "Price: $" << StandardRoom::get_price() << endl;
     cout << "Discount: " << StandardRoom::get_discount() << "%" << endl;
     cout << "Final price: $" << StandardRoom::get_final_price() << endl;
     cout << "=======================================" << endl << endl;
     cout << "=======================================" << endl;
-    cout << "              Double Room";
+    cout << "              Double Room" << endl;
     cout << "Price: $" << DoubleRoom::get_price() << endl;
     cout << "Discount: " << DoubleRoom::get_discount() << "%" << endl;
     cout << "Final price: $" << DoubleRoom::get_final_price() << endl;
     cout << "=======================================" << endl << endl;
     cout << "=======================================" << endl;
-    cout << "              Suite Room";
+    cout << "              Suite Room" << endl;
     cout << "Price: $" << SuiteRoom::get_price() << endl;
     cout << "Discount: " << SuiteRoom::get_discount() << "%" << endl;
     cout << "Final price: $" << SuiteRoom::get_final_price() << endl;
@@ -195,16 +195,21 @@ void TUIClient::book() {
     Datetime start(start_year, start_month, start_day);
     Datetime end(end_year, end_month, end_day);
     Room *r = get_ootel()->get_available_room(room_type, start, end);
+
     if (r == nullptr) {
       cout << endl << "No rooms were found... Try with other dates" << endl;
     } else {
       Client *c = dynamic_cast<Client *>(get_user());
       if (c != nullptr) {
-        ReservationsHistory& rh = get_ootel()->get_reservations_history();
+        ReservationsHistory &rh = get_ootel()->get_reservations_history();
         Fee fee(final_price, Datetime::now());
+
         cout << endl << "Paying..." << endl;
+        c->pay();
         sleep_for(MESSAGE_WAIT_TIME_SECONDS);
+
         cout << endl << "Transaction completed successfully..." << endl;
+
         Reservation reservation(start, end, false, fee, c, r);
         rh.create_reservation(reservation);
         cout << endl << "Reservation created successfully..." << endl;
@@ -223,63 +228,74 @@ void TUIClient::update_reservation() {
   cout << "Reservations" << endl << endl;
 
   Client *c = dynamic_cast<Client *>(get_user());
-  ReservationsHistory& rh = get_ootel()->get_reservations_history();
+  ReservationsHistory &rh = get_ootel()->get_reservations_history();
   vector<Reservation> reservations = rh.find_by(*c);
 
-  print_reservations(reservations);
+  if (reservations.empty()) {
+    cout << "No reservations were found..." << endl;
+    press_enter_continue();
+  } else {
+    print_reservations(reservations);
 
-  int id;
-  cout << "(-1 to return)" << endl;
-  cout << "ID > ";
-  cin >> id;
+    int id;
+    cout << "(-1 to return)" << endl;
+    cout << "ID > ";
+    cin >> id;
 
-  if (id == -1)
-    return;
+    if (id == -1)
+      return;
 
-  int start_year;
-  int start_month;
-  int start_day;
-  int end_year;
-  int end_month;
-  int end_day;
+    int start_year;
+    int start_month;
+    int start_day;
+    int end_year;
+    int end_month;
+    int end_day;
 
-  clear_screen();
-  print_banner();
-  cout << "Reservations" << endl << endl;
+    clear_screen();
+    print_banner();
+    cout << "Reservations" << endl << endl;
 
-  cout << "=======================================" << endl;
-  cout << "              Start Date" << endl;
-  cout << "Year (xxxx): ";
-  cin >> start_year;
-  cout << "Month (1-12): ";
-  cin >> start_month;
-  cout << "Day (1-31): ";
-  cin >> start_day;
-  cout << endl;
-  cout << "=======================================" << endl;
-  cout << "               End Date" << endl;
-  cout << "Year (xxxx): ";
-  cin >> end_year;
-  cout << "Month (1-12): ";
-  cin >> end_month;
-  cout << "Day (1-31): ";
-  cin >> end_day;
+    cout << "=======================================" << endl;
+    cout << "              Start Date" << endl;
+    cout << "Year (xxxx): ";
+    cin >> start_year;
+    cout << "Month (1-12): ";
+    cin >> start_month;
+    cout << "Day (1-31): ";
+    cin >> start_day;
+    cout << endl;
+    cout << "=======================================" << endl;
+    cout << "               End Date" << endl;
+    cout << "Year (xxxx): ";
+    cin >> end_year;
+    cout << "Month (1-12): ";
+    cin >> end_month;
+    cout << "Day (1-31): ";
+    cin >> end_day;
 
-  try {
-    Datetime start(start_year, start_month, start_day);
-    Datetime end(end_year, end_month, end_day);
-    
-    Reservation& r = rh.find_by(id);
-    r.set_start_date(start);
-    r.set_end_date(end);
-    
-    rh.update_reservation(id, r);
-    cout << endl << "Reservation updated successfully..." << endl;
-  } catch (const exception &e) {
-    cout << endl << e.what() << endl;
+    try {
+      Datetime start(start_year, start_month, start_day);
+      Datetime end(end_year, end_month, end_day);
+      Reservation &reservation = rh.find_by(id);
+      Room *r = get_ootel()->get_available_room(
+          reservation.get_room()->get_type(), start, end);
+
+      if (r == nullptr)
+        cout << endl << "No rooms were found... Try with other dates" << endl;
+      else {
+        reservation.set_start_date(start);
+        reservation.set_end_date(end);
+        reservation.set_room(r);
+        rh.update_reservation(id, reservation);
+        cout << endl << "Reservation updated successfully..." << endl;
+      }
+    } catch (const exception &e) {
+      cout << endl << e.what() << endl;
+    }
+
+    sleep_for(MESSAGE_WAIT_TIME_SECONDS);
   }
-
-  sleep_for(MESSAGE_WAIT_TIME_SECONDS);
 }
 
 void TUIClient::delete_reservation() {
@@ -288,26 +304,35 @@ void TUIClient::delete_reservation() {
   cout << "Reservations" << endl << endl;
 
   Client *c = dynamic_cast<Client *>(get_user());
-  ReservationsHistory& rh = get_ootel()->get_reservations_history();
+  ReservationsHistory &rh = get_ootel()->get_reservations_history();
   vector<Reservation> reservations = rh.find_by(*c);
 
-  print_reservations(reservations);
+  if (reservations.empty()) {
+    cout << "No reservations were found..." << endl;
+    press_enter_continue();
+  } else {
+    print_reservations(reservations);
 
-  int id;
-  cout << "(-1 to return)" << endl;
-  cout << "ID > ";
-  cin >> id;
+    int id;
+    cout << "(-1 to return)" << endl;
+    cout << "ID > ";
+    cin >> id;
 
-  if (id == -1)
-    return;
-  try {
-    rh.delete_reservation(id);
-    cout << endl << "Reservation deleted successfully..." << endl;
-  } catch (const exception &e) {
-    cout << endl << e.what() << endl;
+    if (id == -1)
+      return;
+    try {
+      rh.delete_reservation(id);
+      cout << endl << "Reimbursing..." << endl;
+      c->refund();
+      sleep_for(MESSAGE_WAIT_TIME_SECONDS);
+      cout << endl << "Succesful refund..." << endl;
+      cout << endl << "Reservation deleted successfully..." << endl;
+    } catch (const exception &e) {
+      cout << endl << e.what() << endl;
+    }
+
+    sleep_for(MESSAGE_WAIT_TIME_SECONDS);
   }
-
-  sleep_for(MESSAGE_WAIT_TIME_SECONDS);
 }
 
 void TUIClient::see_reservations() {
@@ -333,7 +358,6 @@ void TUIClient::see_reservations() {
 
 void TUIClient::print_reservations(vector<Reservation> reservations) {
   for (int i = 0; i < reservations.size(); i++) {
-    cout << endl;
     cout << "=========================================" << endl;
     cout << reservations[i].to_string();
     cout << "=========================================" << endl;
@@ -692,4 +716,3 @@ void TUIClient::update_profile() {
   }
   sleep_for(MESSAGE_WAIT_TIME_SECONDS);
 }
-

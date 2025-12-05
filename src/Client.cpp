@@ -28,7 +28,15 @@ Client::~Client() {
 
 vector<BankCard *> Client::get_bank_cards() { return this->bank_cards; }
 
-void Client::add_card(BankCard *card) { bank_cards.push_back(card); }
+void Client::add_card(BankCard *card) {
+  if (card->get_expiration_year() < Datetime::now().get_year())
+    throw invalid_argument("Invalid expiration year...");
+
+  if (card->get_cardholder().empty())
+    throw invalid_argument("Invalid cardholder...");
+
+  bank_cards.push_back(card);
+}
 
 void Client::remove_bank_card(int index) {
   if (index >= 0 && index < bank_cards.size()) {
@@ -43,6 +51,10 @@ void Client::remove_bank_card(int index) {
 void Client::update_bank_card(int index, BankCard *card) {
   if (card == nullptr)
     throw runtime_error("Card cannot be null");
+  if (card->get_expiration_year() < Datetime::now().get_year())
+    throw invalid_argument("Invalid expiration year...");
+  if (card->get_cardholder().empty())
+    throw invalid_argument("Invalid cardholder...");
   if (index >= 0 && index < bank_cards.size()) {
     if (selected_card == bank_cards[index])
       selected_card = card;
@@ -59,7 +71,7 @@ void Client::set_selected_card(int index) {
     selected_card = bank_cards[index];
 }
 
-BankCard* Client::get_bank_card(int index) {
+BankCard *Client::get_bank_card(int index) {
   if (index >= 0 && index < bank_cards.size())
     return bank_cards[index];
   else
@@ -71,6 +83,11 @@ BankCard *Client::get_selected_card() { return selected_card; }
 void Client::pay() {
   if (selected_card == nullptr)
     throw runtime_error("No card is selected");
+}
+
+void Client::refund() {
+  if (bank_cards.empty())
+    throw runtime_error("No card is added");
 }
 
 string Client::to_string() {

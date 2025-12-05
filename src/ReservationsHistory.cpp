@@ -11,6 +11,7 @@ vector<Reservation> ReservationsHistory::get_reservations() {
 }
 
 void ReservationsHistory::create_reservation(Reservation reservation) {
+  reservation.get_room()->set_available(false);
   reservation.set_id(reservations_id++);
   reservations.push_back(reservation);
 }
@@ -18,6 +19,7 @@ void ReservationsHistory::create_reservation(Reservation reservation) {
 void ReservationsHistory::delete_reservation(int id) {
   for (int i = 0; i < reservations.size(); i++) {
     if (reservations[i].get_id() == id) {
+      reservations[i].get_room()->set_available(true);
       reservations.erase(reservations.begin() + i);
       return;
     }
@@ -74,29 +76,29 @@ Reservation& ReservationsHistory::find_by(const int id) {
 }
 
 vector<Reservation> ReservationsHistory::find_by(Client &client) {
-  vector<Reservation> reservations;
+  vector<Reservation> result;
   for (auto r : reservations) {
     if (r.get_client()->get_id() == client.get_id()) {
-      reservations.push_back(r);
+      result.push_back(r);
     }
   }
-  return reservations;
+  return result;
 }
 
 vector<Reservation> ReservationsHistory::find_by(Room &room) {
-  vector<Reservation> reservations;
+  vector<Reservation> result;
   for (auto r : reservations) {
     if (r.get_room()->get_number() == room.get_number()) {
-      reservations.push_back(r);
+      result.push_back(r);
     }
   }
-  return reservations;
+  return result;
 }
 
 bool ReservationsHistory::is_reserved(Room* room, Datetime start, Datetime end) {
   vector<Reservation> reservations = find_by(*room);
   for(auto res: reservations) {
-    if (res.get_start_date() < end && res.get_end_date() > start)
+    if (res.get_start_date() <= end && res.get_end_date() >= start)
       return true;
   }
   return false;

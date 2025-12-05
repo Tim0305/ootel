@@ -16,6 +16,8 @@ public:
   // Getters
   static int get_discount();
   static double get_price();
+  static int get_number_beds();
+  static int get_number_people();
   static double get_final_price();
 
   // Setters

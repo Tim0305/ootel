@@ -66,7 +66,7 @@ string Reservation::to_string() {
   }
 
   ss << "             ------- Fee ------ " << endl;
-  ss << fee.to_string() << endl;
+  ss << fee.to_string();
 
   return ss.str();
 }

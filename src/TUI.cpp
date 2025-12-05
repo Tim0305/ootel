@@ -1,4 +1,5 @@
 #include "TUI.h"
+#include "Datetime.h"
 #include "TUIManager.h"
 #include <exception>
 #include <iostream>
@@ -93,8 +94,12 @@ optional<User> TUI::user_form() {
 
   try {
     Datetime birthdate(year, month, day);
+    if (birthdate >= Datetime::now())
+      throw runtime_error("Invalid birthdate...");
+
     User user(name, last_name, email, phone_number, password, birthdate,
               User::CLIENT);
+
     return user;
   } catch (const exception &e) {
     cout << endl << e.what() << endl;
@@ -117,9 +122,13 @@ void TUI::press_enter_continue() {
 }
 
 void TUI::sign_out() {
+  clear_screen();
+  print_banner();
+
   if (get_user() == nullptr) {
     throw runtime_error("No user was found...");
   }
+
   get_user()->sign_out();
   cout << endl << "Signing out..." << endl;
   get_manager()->go_back();

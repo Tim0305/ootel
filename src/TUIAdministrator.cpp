@@ -1,9 +1,9 @@
 #include "TUIAdministrator.h"
 #include "Administrator.h"
 #include "DoubleRoom.h"
+#include "ReservationsHistory.h"
 #include "StandardRoom.h"
 #include "SuiteRoom.h"
-#include "TUIClient.h"
 #include <exception>
 #include <iostream>
 #include <stdexcept>
@@ -113,9 +113,10 @@ void TUIAdministrator::update_administrator() {
   clear_screen();
   print_banner();
   cout << "Update Administrator" << endl << endl;
-  if (get_ootel()->get_users().empty())
+  if (get_ootel()->get_users().empty()) {
     cout << "No administrators were found..." << endl;
-  else {
+    press_enter_continue();
+  } else {
     print_administrators();
 
     int id;
@@ -145,7 +146,7 @@ void TUIAdministrator::update_administrator() {
         User newUser = optional_user.value();
         if (u == nullptr || u->get_type() != User::ADMINISTRATOR)
           cout << endl
-               << "Administrator with id " << id << " was not found" << endl;
+               << "Administrator with id " << id << " was not found..." << endl;
         else {
           try {
             // Primero actualizar el password
@@ -161,17 +162,18 @@ void TUIAdministrator::update_administrator() {
         }
       }
     }
+    sleep_for(MESSAGE_WAIT_TIME_SECONDS);
   }
-  sleep_for(MESSAGE_WAIT_TIME_SECONDS);
 }
 
 void TUIAdministrator::delete_administrator() {
   clear_screen();
   print_banner();
   cout << "Delete Administrator" << endl << endl;
-  if (get_ootel()->get_users().empty())
+  if (get_ootel()->get_users().empty()) {
     cout << "No administrators were found..." << endl;
-  else {
+    press_enter_continue();
+  } else {
     print_administrators();
 
     int id;
@@ -188,7 +190,7 @@ void TUIAdministrator::delete_administrator() {
       User *u = get_ootel()->find_user(id);
       if (u == nullptr || u->get_type() != User::ADMINISTRATOR)
         cout << endl
-             << "Administrator with id " << id << " was not found" << endl;
+             << "Administrator with id " << id << " was not found..." << endl;
       else {
         try {
           get_ootel()->delete_user(id);
@@ -198,8 +200,8 @@ void TUIAdministrator::delete_administrator() {
         }
       }
     }
+    sleep_for(MESSAGE_WAIT_TIME_SECONDS);
   }
-  sleep_for(MESSAGE_WAIT_TIME_SECONDS);
 }
 
 void TUIAdministrator::see_administrators() {
@@ -238,14 +240,17 @@ void TUIAdministrator::rooms() {
     cout << "[2] - Update a room" << endl;
     cout << "[3] - Delete a room" << endl;
     cout << "[4] - See rooms" << endl;
-    cout << "[5] - Go back" << endl;
+    cout << "[5] - Update prices" << endl;
+    cout << "[6] - Update discounts" << endl;
+    cout << "[7] - See rooms info" << endl;
+    cout << "[8] - Go back" << endl;
     cout << endl;
     cout << "> ";
     cin >> opcion;
 
-    if (opcion < 1 || opcion > 5)
+    if (opcion < 1 || opcion > 8)
       print_incorrect_option();
-  } while (opcion < 1 || opcion > 5);
+  } while (opcion < 1 || opcion > 8);
 
   switch (opcion) {
   case 1:
@@ -269,6 +274,21 @@ void TUIAdministrator::rooms() {
     rooms();
     break;
   case 5:
+    update_prices();
+    // Regresar al menu de rooms
+    rooms();
+    break;
+  case 6:
+    update_discounts();
+    // Regresar al menu de rooms
+    rooms();
+    break;
+  case 7:
+    see_rooms_info();
+    // Regresar al menu de rooms
+    rooms();
+    break;
+  case 8:
     break;
   }
 }
@@ -292,6 +312,10 @@ void TUIAdministrator::create_room() {
     if (opcion < 1 || opcion > 4)
       print_incorrect_option();
   } while (opcion < 1 || opcion > 4);
+
+  clear_screen();
+  print_banner();
+  cout << "Create room" << endl << endl;
 
   int number;
   cout << "Number: ";
@@ -318,12 +342,272 @@ void TUIAdministrator::create_room() {
   sleep_for(MESSAGE_WAIT_TIME_SECONDS);
 }
 
-void TUIAdministrator::update_room() {}
+void TUIAdministrator::update_room() {
+  clear_screen();
+  print_banner();
 
-void TUIAdministrator::delete_room() {}
+  cout << "Update room" << endl << endl;
 
-void TUIAdministrator::see_rooms() {}
+  if (get_ootel()->get_rooms().empty()) {
+    cout << "No rooms were found..." << endl;
+    press_enter_continue();
+  } else {
+    print_rooms();
 
-void TUIAdministrator::print_rooms() {}
+    int number;
+    cout << "(-1 to return)" << endl;
+    cout << "Number > ";
+    cin >> number;
 
-void TUIAdministrator::reservations() {}
+    Room *r = get_ootel()->find_room(number);
+
+    if (r == nullptr)
+      cout << endl
+           << "Room with number " << number << " was not found..." << endl;
+    else {
+      clear_screen();
+      print_banner();
+
+      int people;
+      int beds;
+
+      cout << "Update room" << endl << endl;
+      cout << "People: ";
+      cin >> people;
+      cout << "Beds: ";
+      cin >> beds;
+
+      try {
+        switch (r->get_type()) {
+        case Room::STANDARD: {
+          StandardRoom new_room(number);
+          new_room.update(*r);
+          new_room.set_number_people(people);
+          new_room.set_number_beds(beds);
+          get_ootel()->update_room(number, new_room);
+          break;
+        }
+        case Room::DOUBLE: {
+          DoubleRoom new_room(number);
+          new_room.update(*r);
+          new_room.set_number_people(people);
+          new_room.set_number_beds(beds);
+          get_ootel()->update_room(number, new_room);
+          break;
+        }
+        case Room::SUITE: {
+          SuiteRoom new_room(number);
+          new_room.update(*r);
+          new_room.set_number_people(people);
+          new_room.set_number_beds(beds);
+          get_ootel()->update_room(number, new_room);
+          break;
+        }
+        default:
+          throw runtime_error("Error. Room type doesn't exist...");
+        }
+        cout << endl << "Room updated successfully..." << endl;
+      } catch (const exception &e) {
+        cout << endl << e.what() << endl;
+      }
+    }
+    sleep_for(MESSAGE_WAIT_TIME_SECONDS);
+  }
+}
+
+void TUIAdministrator::delete_room() {
+  clear_screen();
+  print_banner();
+
+  cout << "Update room" << endl << endl;
+
+  if (get_ootel()->get_rooms().empty()) {
+    cout << "No rooms were found..." << endl;
+    press_enter_continue();
+  } else {
+    print_rooms();
+
+    int number;
+    cout << "(-1 to return)" << endl;
+    cout << "Number > ";
+    cin >> number;
+
+    try {
+      get_ootel()->delete_room(number);
+      cout << endl << "Room deleted successfully..." << endl;
+    } catch (const exception &e) {
+      cout << endl << e.what() << endl;
+    }
+    sleep_for(MESSAGE_WAIT_TIME_SECONDS);
+  }
+}
+
+void TUIAdministrator::see_rooms() {
+  clear_screen();
+  print_banner();
+
+  cout << "Rooms" << endl << endl;
+
+  if (get_ootel()->get_rooms().empty())
+    cout << "No rooms were found..." << endl;
+  else
+    print_rooms();
+
+  press_enter_continue();
+}
+
+void TUIAdministrator::see_rooms_info() {
+  clear_screen();
+  print_banner();
+
+  cout << "Rooms info" << endl << endl;
+  cout << "=======================================" << endl;
+  cout << "              Standard Room" << endl;
+  cout << "Price: $" << StandardRoom::get_price() << endl;
+  cout << "Discount: " << StandardRoom::get_discount() << "%" << endl;
+  cout << "Final price: $" << StandardRoom::get_final_price() << endl;
+  cout << "=======================================" << endl << endl;
+  cout << "=======================================" << endl;
+  cout << "              Double Room" << endl;
+  cout << "Price: $" << DoubleRoom::get_price() << endl;
+  cout << "Discount: " << DoubleRoom::get_discount() << "%" << endl;
+  cout << "Final price: $" << DoubleRoom::get_final_price() << endl;
+  cout << "=======================================" << endl << endl;
+  cout << "=======================================" << endl;
+  cout << "              Suite Room" << endl;
+  cout << "Price: $" << SuiteRoom::get_price() << endl;
+  cout << "Discount: " << SuiteRoom::get_discount() << "%" << endl;
+  cout << "Final price: $" << SuiteRoom::get_final_price() << endl;
+  cout << "=======================================" << endl << endl;
+
+  press_enter_continue();
+}
+
+void TUIAdministrator::update_prices() {
+  int opcion;
+  do {
+    clear_screen();
+    print_banner();
+
+    cout << "Update prices" << endl << endl;
+    cout << "[1] - Standard" << endl;
+    cout << "[2] - Double" << endl;
+    cout << "[3] - Suite" << endl;
+    cout << "[4] - Go back" << endl;
+    cout << endl;
+    cout << "> ";
+    cin >> opcion;
+
+    if (opcion < 1 || opcion > 4)
+      print_incorrect_option();
+  } while (opcion < 1 || opcion > 4);
+
+  if (opcion == 4)
+    return;
+
+  clear_screen();
+  print_banner();
+
+  cout << "Update prices" << endl << endl;
+
+  double price;
+  cout << "Price: $";
+  cin >> price;
+
+  switch (opcion) {
+  case 1:
+    StandardRoom::set_price(price);
+    cout << endl << "Price updated successfully..." << endl;
+    break;
+  case 2:
+    DoubleRoom::set_price(price);
+    cout << endl << "Price updated successfully..." << endl;
+    break;
+  case 3:
+    SuiteRoom::set_price(price);
+    cout << endl << "Price updated successfully..." << endl;
+    break;
+  }
+  sleep_for(MESSAGE_WAIT_TIME_SECONDS);
+}
+
+void TUIAdministrator::update_discounts() {
+  int opcion;
+
+  do {
+    clear_screen();
+    print_banner();
+
+    cout << "Update discounts" << endl << endl;
+    cout << "[1] - Standard" << endl;
+    cout << "[2] - Double" << endl;
+    cout << "[3] - Suite" << endl;
+    cout << "[4] - Go back" << endl;
+    cout << endl;
+    cout << "> ";
+    cin >> opcion;
+
+    if (opcion < 1 || opcion > 4)
+      print_incorrect_option();
+  } while (opcion < 1 || opcion > 4);
+
+  if (opcion == 4)
+    return;
+
+  clear_screen();
+  print_banner();
+
+  cout << "Update discounts" << endl << endl;
+
+  int discount;
+  cout << "Discount: ";
+  cin >> discount;
+
+  switch (opcion) {
+  case 1:
+    StandardRoom::set_discount(discount);
+    cout << endl << "Discount updated successfully..." << endl;
+    break;
+  case 2:
+    DoubleRoom::set_discount(discount);
+    cout << endl << "Discount updated successfully..." << endl;
+    break;
+  case 3:
+    SuiteRoom::set_discount(discount);
+    cout << endl << "Discount updated successfully..." << endl;
+    break;
+  }
+  sleep_for(MESSAGE_WAIT_TIME_SECONDS);
+}
+
+void TUIAdministrator::print_rooms() {
+  vector<Room *> rooms = get_ootel()->get_rooms();
+
+  for (auto r : rooms) {
+    cout << "======================================" << endl;
+    cout << r->to_string();
+    cout << "======================================" << endl;
+    cout << endl;
+  }
+}
+
+void TUIAdministrator::reservations() {
+  clear_screen();
+  print_banner();
+  cout << "Reservations" << endl << endl;
+
+  ReservationsHistory rh = get_ootel()->get_reservations_history();
+  vector<Reservation> reservations = rh.get_reservations();
+
+  if (reservations.empty())
+    cout << "No reservations were found..." << endl;
+  else
+    for (int i = 0; i < reservations.size(); i++) {
+      cout << "=========================================" << endl;
+      cout << reservations[i].to_string();
+      cout << "=========================================" << endl;
+      cout << endl;
+    }
+
+  press_enter_continue();
+}

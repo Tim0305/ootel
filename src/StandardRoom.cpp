@@ -12,7 +12,7 @@ int StandardRoom::get_discount() { return DISCOUNT; }
 double StandardRoom::get_price() { return PRICE; }
 
 double StandardRoom::get_final_price() {
-  return PRICE * ((100 - DISCOUNT) / 100);
+  return PRICE * ((100 - DISCOUNT) / 100.0);
 }
 
 // Setter

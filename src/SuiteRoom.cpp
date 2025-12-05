@@ -11,7 +11,9 @@ int SuiteRoom::get_discount() { return DISCOUNT; }
 
 double SuiteRoom::get_price() { return PRICE; }
 
-double SuiteRoom::get_final_price() { return PRICE * ((100 - DISCOUNT) / 100); }
+double SuiteRoom::get_final_price() {
+  return PRICE * ((100 - DISCOUNT) / 100.0);
+}
 
 // Setter
 void SuiteRoom::set_discount(int discount) { DISCOUNT = discount; }

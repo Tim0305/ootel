@@ -1,16 +1,15 @@
 #include "Room.h"
 #include <sstream>
-#include <stdexcept>
 
 using namespace std;
 
 // Getters
 
-int Room::get_number() { return number; }
-int Room::get_type() { return type; }
-bool Room::is_available() { return available; }
-int Room::get_number_people() { return number_people; }
-int Room::get_number_beds() { return number_beds; }
+int Room::get_number() const { return number; }
+int Room::get_type()const { return type; }
+bool Room::is_available()const { return available; }
+int Room::get_number_people()const { return number_people; }
+int Room::get_number_beds()const { return number_beds; }
 
 // Setters
 
@@ -47,6 +46,13 @@ string Room::to_string() {
   ss << "Number: " << number << endl;
   ss << "People: " << number_people << endl;
   ss << "Beds: " << number_beds << endl;
-
   return ss.str();
+}
+
+void Room::update(const Room& room) {
+  this->number = room.type;
+  this->type = room.type;
+  this->available = room.available;
+  this->number_people = room.number_people;
+  this->number_beds = room.number_beds;
 }

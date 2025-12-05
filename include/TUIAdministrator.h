@@ -11,6 +11,9 @@ private:
   void see_administrators();
   void print_administrators();
   void rooms();
+  void update_prices();
+  void update_discounts();
+  void see_rooms_info();
   void create_room();
   void update_room();
   void delete_room();

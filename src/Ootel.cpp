@@ -81,55 +81,45 @@ void Ootel::create_room(Room *room) {
   rooms.push_back(room);
 }
 
-void Ootel::update_room(int number, Room *room) {
-  if (room == nullptr)
-    throw runtime_error("Room cannot be nullptr");
+void Ootel::update_room(int number, Room &room) {
+  if (find_room(room.get_number()) == nullptr)
+    throw invalid_argument("Room with number " + to_string(room.get_number()) +
+                           " was not found...");
 
   for (int i = 0; i < rooms.size(); i++) {
     if (rooms[i]->get_number() == number) {
-      delete rooms[i];
-      rooms[i] = room; // sobreescribe sus datos
+      rooms[i]->update(room);
       return;
     }
   }
 
-  throw runtime_error("Room with number " + to_string(number) + " not found");
+  throw runtime_error("Room with number " + to_string(number) + " not found...");
 }
 
 void Ootel::delete_room(int number) {
   for (int i = 0; i < rooms.size(); i++) {
     if (rooms[i]->get_number() == number) {
+      vector<Reservation> reservations =
+          reservations_history.find_by(*rooms[i]);
+      if (!reservations.empty())
+        throw runtime_error(
+            "Room cannot be deleted. Reservations use this room...");
       delete rooms[i];
       rooms.erase(rooms.begin() + i);
       return;
     }
   }
 
-  throw runtime_error("Room with number " + to_string(number) + " not found");
+  throw runtime_error("Room with number " + to_string(number) + " not found...");
 }
 
 // Control de Usuarios
 void Ootel::create_user(User *user) {
   if (user == nullptr)
-    throw runtime_error("User cannot be nullptr");
+    throw runtime_error("User cannot be nullptr...");
   // Update id
   user->set_id(users_id++);
   users.push_back(user);
-}
-
-void Ootel::update_user(int id, User *user) {
-  if (user == nullptr)
-    throw runtime_error("User cannot be nullptr");
-
-  for (int i = 0; i < users.size(); i++) {
-    if (users[i]->get_id() == id) {
-      delete users[i];
-      users[i] = user;
-      return;
-    }
-  }
-
-  throw runtime_error("User with id " + to_string(id) + " not found");
 }
 
 void Ootel::delete_user(int id) {
@@ -144,7 +134,7 @@ void Ootel::delete_user(int id) {
     }
   }
 
-  throw runtime_error("User with id " + to_string(id) + " not found");
+  throw runtime_error("User with id " + to_string(id) + " not found...");
 }
 
 // Finders
